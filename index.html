@@ -4,6 +4,13 @@
 4.  Add about yourself text area
 5.  Also try image upload in same form and check if is png, jpg, jpeg, gif
 6.  Print form data within same page in a DIV using js
+1.  On error alert show mouse cursor on particular field
+2.  Add password and confirm password field with validation
+3.  Give proper alert msg
+4.  Dont allow user to click on + button unless all the fields are filled of same row
+5.  Show image also on the display div / screen
+6.  Also please try to show error alert near same field with making input fileds border as red and remove border and alert msg if error is fixed
+
  -->
 
 
@@ -111,6 +118,7 @@
                                             value="" placeholder="Education qualification">
                                     </td>
                                     <td>
+
                                         <input class="field" type="text" id="field" name="field" value=""
                                             placeholder="Field">
                                     </td>
@@ -122,27 +130,29 @@
                                         <input class="marks" type="text" name="marks" id="marks" value=""
                                             placeholder="Marks Obtained">
                                     </td>
-                                    <div id="add_and_delete" class="add_and_delete">
-                                        <button onclick="addFunc()" type="button" class="add" id="add" name="add"
-                                            value="+">
-                                            +
-                                        </button>
-                                        <button onclick="myDeleteFunction()" type="button" class="add" id="add"
-                                            name="add" value="-">
-                                            -
-                                        </button>
-
-                                    </div>
-
-                            </tbody>
-                        </table>
-
+                                    <td>
+                                        <div id="add_and_delete" class="add_and_delete">
+                                            <button onclick="addFunc()" type="button" class="add" id="add" name="add"
+                                                value="+">
+                                                +
+                                            </button>
+                                            <button onclick="myDeleteFunction()" type="button" class="add" id="add"
+                                                name="add" value="-">
+                                                -
+                                            </button>
+                                        </div>
+                                    </td>
                     </div>
+
+                    </tbody>
+                    </table>
+
                 </div>
-                <input class="button" type="button" id="submit" value="Submit"></input>
-            </form>
-            <script src="script.js"></script>
-        </section>
+    </div>
+    <input class="button" type="button" id="submit" value="Submit"></input>
+    </form>
+    <script src="script.js"></script>
+    </section>
     </div>
 
 
