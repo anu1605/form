@@ -158,13 +158,17 @@
                     <label for="myFile">Add Image</label>
                     <br>
                     <input type="file" id="myFile" name="filename" value="" onchange="return fileValidation()">
+                    <div class="image_message">
+                        <p id="image_error"></p>
+                    </div>
                 </div>
                 <br>
 
                 <div class="password">
                     <label for="pwd">Password:</label>
                     <br>
-                    <input type="password" id="pwd" name="pwd" pattern="(?=.*\d) (?=.*[a-z]) (?=.*[A-Z]) .{8,}">
+                    <input value="" type="password" id="pwd" name="pwd"
+                        pattern="(?=.*\d) (?=.*[a-z]) (?=.*[A-Z]) .{8,}">
                     <br>
                     <br>
                     <div class="validator" id="validator">
@@ -177,7 +181,7 @@
 
                     <label for="pwd">Confirm Password:</label>
                     <br>
-                    <input type="password" id="confirm_pwd" name="confirm_pwd">
+                    <input type="password" id="confirm_pwd" name="confirm_pwd val" value="">
                     <div class="pwd_message">
                         <p id="pwd_message"></p>
                     </div>

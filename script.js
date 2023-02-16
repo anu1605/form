@@ -10,7 +10,6 @@ btn.addEventListener("click", func);
 
 
 function func() {
-  console.log(document.getElementById('myFile').value);
 
   var firstName = document.getElementById("fname");
   if (firstName.value == "") {
@@ -101,10 +100,39 @@ function func() {
   
   if(!marksValidate()){
     document.getElementById('marks').scrollIntoView();
-    return
+    return;
   }
 
-
+  var passwordError = document.getElementById('pwd_message');
+  if(!fileValidation()){
+    return;
+  }
+  else document.getElementById('image_error').innerHTML = "";
+  
+  var password = document.getElementById("pwd");
+  if(password.value == "" ){
+    emptyInput = password;
+    emptyInput.select();
+    emptyInput.scrollIntoView();
+    emptyInput.classList.add('redBorder');
+    passwordError.innerHTML = "enter password";
+    return;
+  }
+  var confirm_password = document.getElementById("confirm_pwd" || !confirmPassword())
+  if(password.value == ""){
+    emptyInput = confirm_password;
+    emptyInput.select();
+    emptyInput.scrollIntoView();
+    emptyInput.classList.add('redBorder');
+    passwordError.innerHTML = "confirm password";
+    return;
+  }
+  else if(document.getElementById('invalid').length != 0){
+    passwordError.innerHTML = "enter valid password";
+    return;
+  }
+  else passwordError.innerHTML = "";
+  
 }
 
 var male = document.getElementById("male");
@@ -263,22 +291,26 @@ function validator(){
       length.classList.remove('invalid');
       length.classList.add('valid');
     }
-    else if(myInput.value.length){
+    else{
       length.classList.remove('valid');
       length.classList.add('invalid');
     
     }
-  
 }
-console.log(myInput.value);
+
 var confirm = document.getElementById('confirm_pwd');
-confirm.onkeyup = function() {
+confirm.onkeyup = confirmPassword;
+function confirmPassword(){
   if(myInput.value.length != 0){
     if(confirm.value.length > myInput.value.length ||
        !(confirm.value[confirm.value.length -1 ] == myInput.value[confirm.value.length - 1]))
     document.getElementById('pwd_message').innerHTML = "wrong password";
-    else document.getElementById('pwd_message').innerHTML = "";
+    else {
+      document.getElementById('pwd_message').innerHTML = "";
+      return true;
+    }
   } 
+  return false;
 }
 
 var email = document.getElementById("email");
@@ -333,3 +365,33 @@ function validMarksandYear(){
     document.getElementById('message').innerHTML = "Enter valid Year";
   }
 }
+function fileValidation() {
+  var fileInput =
+  document.getElementById('myFile');
+  var imagePara =  document.getElementById('image_error');
+
+  if(fileInput.value == ""){
+    imagePara.innerHTML = "upload image file";
+    return false;
+   }
+
+ 
+   
+  var filePath = fileInput.value;
+  var allowedExtensions =
+          /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+   console.log(fileInput.files[0].size);
+
+  if (!allowedExtensions.exec(filePath)) {
+      imagePara.innerHTML = "wrong image format";
+      return false;
+  }
+  else imagePara.innerHTML = "";
+  var filesize = fileInput.files[0].size/1024;
+  if(filesize < 50 || filesize>200){
+    alert("Incorrect file size");
+    return false;
+  }
+  return true;
+}
+

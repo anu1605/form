@@ -16,6 +16,7 @@ label:hover{
 
 input {
   font-size: 0.5rem;
+  outline: none;
 }
 
 h2 {
@@ -256,6 +257,11 @@ td input {
 p[id=message], p[id=error],p[id=pwd_message]{
   display: flex;
   justify-content: center;
+  font-weight: 600;
+  color: red;
+  font-size: 0.5rem;
+}
+p[id=image_error]{
   font-weight: 600;
   color: red;
   font-size: 0.5rem;
