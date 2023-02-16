@@ -1,10 +1,6 @@
 <!-- 
-2.  Check if email is valid using regex
-4.  Add about yourself text area
 5.  Also try image upload in same form and check if is png, jpg, jpeg, gif
 6.  Print form data within same page in a DIV using js
-1.  On error alert show mouse cursor on particular field
-2.  Add password and confirm password field with validation
 5.  Show image also on the display div / screen
  -->
 
@@ -30,6 +26,9 @@
 
         <section class="form_content">
             <form id="information">
+                <div class="error_message">
+                    <p id="error"></p>
+                </div>
                 <label for="fname">Firstname:</label><br>
                 <input class="input_text" type="text" id="fname" value="" name="Firstname" placeholder="John"><br>
 
@@ -55,7 +54,7 @@
                 </select> <br><br>
 
                 <div class="subject">
-                    <div class="subject_bar">
+                    <div id="subject_bar" class="subject_bar">
                         <h2>Subject</h2>
                         <button type="button" id="menu" name="menu" value="menu">
 
@@ -66,7 +65,7 @@
                     <div id="option_container" class="option_section">
                         <div class="subject_input">
                             <input class="subject_option" type="checkbox" name="subject" id="maths" value="maths">
-                            <label for="maths">Maths</label>
+                            <label for="maths" id="math">Maths</label>
                         </div>
                         <div class="subject_input">
                             <input class="subject_option" type="checkbox" name="subject" id="biology" value="biology">
@@ -134,9 +133,9 @@
                                                 +
                                             </button>
                                             <!-- <button onclick="myDeleteFunction()" type="button" class="minus" id="minus"
-                    name="minus" value="-">
-                    -
-                </button> -->
+                      name="minus" value="-">
+                      -
+                  </button> -->
                                         </div>
                                     </td>
 
@@ -149,6 +148,41 @@
                     </div>
 
                 </div>
+                <div class="about">
+                    <label for="about_yourself"> Add About Yourself</label>
+                    <br>
+                    <textarea name="about_yourself" id="about_yourself" cols="50" rows="5"></textarea>
+                </div>
+
+                <div class="upload_image">
+                    <label for="myFile">Add Image</label>
+                    <br>
+                    <input type="file" id="myFile" name="filename" value="" onchange="return fileValidation()">
+                </div>
+                <br>
+
+                <div class="password">
+                    <label for="pwd">Password:</label>
+                    <br>
+                    <input type="password" id="pwd" name="pwd" pattern="(?=.*\d) (?=.*[a-z]) (?=.*[A-Z]) .{8,}">
+                    <br>
+                    <br>
+                    <div class="validator" id="validator">
+                        <h3>Password must contain</h3>
+                        <p class="invalid" id="letter"> A lowercase letter</p>
+                        <p class="invalid" id="capital">A capital letter</p>
+                        <p class="invalid" id="number">A number</p>
+                        <p class="invalid" id="length">Minimum 8 characters</p>
+                    </div>
+
+                    <label for="pwd">Confirm Password:</label>
+                    <br>
+                    <input type="password" id="confirm_pwd" name="confirm_pwd">
+                    <div class="pwd_message">
+                        <p id="pwd_message"></p>
+                    </div>
+                </div>
+
                 <input class="button" type="button" id="submit" value="Submit"></input>
             </form>
     </div>
