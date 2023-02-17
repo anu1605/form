@@ -26,9 +26,6 @@
 
         <section class="form_content">
             <form id="information">
-                <div class="error_message">
-                    <p id="error"></p>
-                </div>
                 <label for="fname">Firstname:</label><br>
                 <input class="input_text" type="text" id="fname" value="" name="Firstname" placeholder="John"><br>
 
@@ -37,6 +34,10 @@
                 <label for="email">Email Id:</label><br>
                 <input class="input_text" type="text" value="" id="email" name="Email"
                     placeholder="john.doeS@gmail.com"><br>
+                <div class="error_message">
+                    <p id="error"></p>
+                </div>
+
                 <h2 id="gender_selection" class="gender_class ">Select Gender:</h2>
                 <input class="radio_button" type="radio" id="male" value="" name="gender" value="Male">
                 <label for="male">Male</label><br>
@@ -51,11 +52,14 @@
                     <option value="Singing">Singing</option>
                     <option value="Painting">Painting</option>
                     <option value="None">None</option>
-                </select> <br><br>
+                </select>
+                <div>
+                    <p id="hobbies_error"></p>
+                </div>
 
-                <div class="subject">
+                <div class="subject" id="subject">
                     <div id="subject_bar" class="subject_bar">
-                        <h2>Subject</h2>
+                        <h2>Subject:</h2>
                         <button type="button" id="menu" name="menu" value="menu">
 
                             <img class="down_arrow" src="/images/donw arrow.png" alt="">
@@ -90,6 +94,9 @@
                             <label for="english">English</label>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <p id="subect_error"></p>
                 </div>
 
                 <div id="qualification_container" class="qualification_container">
@@ -133,9 +140,9 @@
                                                 +
                                             </button>
                                             <!-- <button onclick="myDeleteFunction()" type="button" class="minus" id="minus"
-                      name="minus" value="-">
-                      -
-                  </button> -->
+                        name="minus" value="-">
+                        -
+                    </button> -->
                                         </div>
                                     </td>
 
@@ -187,15 +194,23 @@
                     </div>
                 </div>
 
+                <div class="date" id="date">
+                    <label for="date_input">Date:</label> <br>
+                    <input type="text" class="" id="date_input" name="date" value="" placeholder="mm/dd/yyyy">
+                    <div>
+                        <p id="date_error"></p>
+                    </div>
+                </div>
                 <input class="button" type="button" id="submit" value="Submit"></input>
             </form>
     </div>
 
 
+    </div>
     <script src="script.js"></script>
     </section>
     </div>
-
+    <div id="print"></div>
 
 </body>
 

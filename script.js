@@ -1,16 +1,55 @@
 var emptyInput;
-var tableCount=0;
+var tableCount = 0;
 var isSelected = false;
 var alreadyClick = false;
 var listLength = 0;
-  var subjectList = [];
-  var selectedSbject = [];
+var subjectList = [];
+var selectedSbject = [];
+var selectedHobbies = [];
+var year;
+var marks;
 var btn = document.getElementById("submit");
 btn.addEventListener("click", func);
+
+var maths = document.getElementById("maths");
+maths.addEventListener('change',checkSubject(this));
+subjectList.push(maths);
+var biology = document.getElementById("biology");
+subjectList.push(biology);
+var economics = document.getElementById("economics");
+subjectList.push(economics);
+var chemistry = document.getElementById("chemistry");
+var physics = document.getElementById("physics");
+subjectList.push(physics);
+var english = document.getElementById("english");
+subjectList.push(english);
+
+
+for (var subject of subjectList) {
+  subject.addEventListener('change' , checkSubject);
+}
+
+function checkSubject(){
+  if(this.checked == true){
+    document.getElementById('subect_error').innerHTML = "";
+    selectedSbject.push(this.value);
+  }
+  else selectedSbject.pop(this.value);
+}
+
+for (var option of document.getElementById("hobbies").options){
+  option.addEventListener('click',function(){
+    if (this.selected){
+      selectedHobbies.push(this.value);
+      document.getElementById('hobbies_error').innerHTML = "";
+    } 
+  })
+}
 
 
 function func() {
 
+  // validate firstname
   var firstName = document.getElementById("fname");
   if (firstName.value == "") {
     removeBorder();
@@ -21,7 +60,7 @@ function func() {
     return;
   }
 
- 
+  // validate lastname
   var lastName = document.getElementById("lname");
   if (lastName.value == "") {
     removeBorder();
@@ -32,20 +71,18 @@ function func() {
     return;
   }
 
+  // validate email
   var email = document.getElementById("email");
-  if (email.value == "") {
+
+  if (!validateEmail()) {
     removeBorder();
     emptyInput = email;
-    email.classList.add("redBorder");
-    emptyInput.select();
-    emptyInput.scrollIntoView();
-    return;
-  }
-  if(!validateEmail()){
+    emptyInput.classList.add("redBorder");
     email.scrollIntoView();
     return;
   }
 
+  // check if gender is selected
   var male = document.getElementById("male");
   var female = document.getElementById("female");
   if (male.checked == false && female.checked == false) {
@@ -55,84 +92,117 @@ function func() {
     emptyInput.scrollIntoView();
     return;
   }
+  // check if hobbies field is empty
 
-  var selectedValues = [];
-  for (var option of document.getElementById("hobbies").options)
-    if (option.selected) selectedValues.push(option.value);
-  if (selectedValues.length == 0) {
+  if (selectedHobbies.length == 0) {
     removeBorder();
     emptyInput = document.getElementById("hobbies");
     emptyInput.classList.add("redBorder");
     emptyInput.scrollIntoView();
+
+    document.getElementById('hobbies_error').innerHTML = "Select Hobbies";
     return;
   }
+  else document.getElementById('hobbies_error').innerHTML = "";
 
-
-  var maths = document.getElementById("maths");
-  subjectList.push(maths);
-  var biology = document.getElementById("biology");
-  subjectList.push(biology);
-  var economics = document.getElementById("economics");
-  subjectList.push(economics);
-  var chemistry = document.getElementById("chemistry");
-  var physics = document.getElementById("physics");
-  subjectList.push(physics);
-  var english = document.getElementById("english");
-  subjectList.push(english);
-  for (var subject of subjectList) {
-    if (subject.checked == true) selectedSbject.push(subject.value);
-  }
+  // check if subject field is empty
 
   if (selectedSbject.length == 0) {
+    if(!alreadyClick)
     addClass();
-
-    document.getElementById('option_container').scrollIntoView();
+    document.getElementById("option_container").scrollIntoView();
+    document.getElementById('subect_error').innerHTML = "Select Subject";
     return;
-  } 
+  }
+  else document.getElementById('subect_error').innerHTML = "";
 
-
-  checkEmptyCell(5, document.getElementById("table_body").rows[tableCount]);
-
-  if(!yearValidate()){
-    document.getElementById('year').scrollIntoView();
+  // validate table
+  for(var i=0;i<= tableCount;i++){
+    if(!checkEmptyCell(5, document.getElementById("table_body").rows[i]))
     return;
   }
   
-  if(!marksValidate()){
-    document.getElementById('marks').scrollIntoView();
+  // year validate
+  if (!yearValidate()) {
+    document.getElementById("year").scrollIntoView();
+    return;
+  }
+  if (!marksValidate()) {
+    document.getElementById("marks").scrollIntoView();
     return;
   }
 
-  var passwordError = document.getElementById('pwd_message');
-  if(!fileValidation()){
+  // image validation
+  if (!fileValidation()) {
     return;
-  }
-  else document.getElementById('image_error').innerHTML = "";
-  
+  } else document.getElementById("image_error").innerHTML = "";
+  var passwordError = document.getElementById("pwd_message");
   var password = document.getElementById("pwd");
-  if(password.value == "" ){
+  if (password.value == "") {
+    removeBorder();
     emptyInput = password;
     emptyInput.select();
     emptyInput.scrollIntoView();
-    emptyInput.classList.add('redBorder');
+    emptyInput.classList.add("redBorder");
     passwordError.innerHTML = "enter password";
     return;
-  }
-  var confirm_password = document.getElementById("confirm_pwd" || !confirmPassword())
-  if(password.value == ""){
-    emptyInput = confirm_password;
-    emptyInput.select();
-    emptyInput.scrollIntoView();
-    emptyInput.classList.add('redBorder');
-    passwordError.innerHTML = "confirm password";
-    return;
-  }
-  else if(document.getElementById('invalid').length != 0){
+  } else if (document.getElementsByClassName("invalid").length != 0) {
     passwordError.innerHTML = "enter valid password";
     return;
   }
-  else passwordError.innerHTML = "";
+  var confirm_password = document.getElementById("confirm_pwd");
+  if (confirm_password.value == "") {
+    removeBorder();
+    emptyInput = confirm_password;
+    emptyInput.select();
+    emptyInput.scrollIntoView();
+    emptyInput.classList.add("redBorder");
+    passwordError.innerHTML = "confirm password";
+    return;
+  } else if (!confirmPassword()) {
+    passwordError.innerHTML = "confirm password is wrong";
+    return;
+  } else if (confirm_password.value.length != password.value.length) {
+    removeBorder();
+    emptyInput = confirm_password;
+    emptyInput.select();
+    emptyInput.scrollIntoView();
+    emptyInput.classList.add("redBorder");
+    passwordError.innerHTML = "confirm password is wrong";
+    return;
+  } else passwordError.innerHTML = "";
+
+  // date validation
+  if(!validDate()){
+    return;
+  }
   
+  // print output
+  var printContainer = document.getElementById('print');
+  printContainer.innerHTML = "";
+  var form = document.getElementById('information');
+  var formData = new FormData(form);
+
+  for(item of formData){
+    if(item[0] == "filename"){
+
+      var fileInput = document.getElementById("myFile");
+      if (fileInput.files && fileInput.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          printContainer.innerHTML +=
+                '<img style = "width : 10rem" src="' + e.target.result
+                + '"/>';
+        };
+         
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+
+  }
+  else
+  printContainer.innerHTML += item[0] + ": " + item[1] + "<br>"+"<br>";
+}
+
 }
 
 var male = document.getElementById("male");
@@ -166,7 +236,6 @@ function addClass() {
     alreadyClick = false;
   }
 }
-
 
 function addFunc() {
   //Add and delete row
@@ -217,181 +286,209 @@ function checkEmptyCell(length, row) {
       childList[index].classList.add("redBorder");
       emptyInput.select();
       emptyInput.scrollIntoView();
-      document.getElementById('message').innerHTML = childList[index].placeholder +" is Incomplete";
+      document.getElementById("message").innerHTML =
+        childList[index].placeholder + " is Incomplete";
       return false;
     }
-  }
+    else{
+      if(childList[index].className == 'year'){
+         var keyup = childList[index].onkeyup = newYearValidate(childList[index]);
+         var blur = childList[index].onblur = newYearValidate(childList[index]);
+         var submit = newYearValidate(childList[index]);
+          if(!(keyup && blur && submit))
+          return false;
+        }
+  
+         else if(childList[index].className == 'marks'){
+          var keyup = childList[index].onkeyup = newMarksValidate(childList[index]);
+          var blur = childList[index].onblur = newMarksValidate(childList[index]);
+          var submit = newMarksValidate(childList[index]);
+          if(!(keyup && blur && submit))
+          return false;
+        }
+    } 
+
+    }
   return true;
 }
+function newYearValidate(new_year){
+  if(/^[0-9]{1,4}$/.test(new_year.value)){
+    // document.getElementById("message").innerHTML = "";
+    return true;
+  }
+  else document.getElementById("message").innerHTML = "Enter Valid Year";
+  return false;
+}
 
+function newMarksValidate(new_marks){
+  if(/^[0-9]*$/.test(new_marks.value)){
+    // document.getElementById("message").innerHTML = "";
+    return true;
+  }
+  else document.getElementById("message").innerHTML = "Enter Valid Marks";
+}
 document.addEventListener("click", removeBorder);
 
 function removeBorder() {
   if (emptyInput != undefined && emptyInput.value != "") {
     emptyInput.classList.remove("redBorder");
-    document.getElementById('message').innerHTML = "";
+    document.getElementById("message").innerHTML = "";
   }
 }
 
-var myInput = document.getElementById('pwd');
-var letter = document.getElementById('letter');
-var capital = document.getElementById('capital');
-var number = document.getElementById('number');
-var length = document.getElementById('length');
+var myInput = document.getElementById("pwd");
+var letter = document.getElementById("letter");
+var capital = document.getElementById("capital");
+var number = document.getElementById("number");
+var length = document.getElementById("length");
 
-myInput.onfocus = function() {
-  document.getElementById('validator').style.display = "block";
-}
+myInput.onfocus = function () {
+  document.getElementById("validator").style.display = "block";
+};
 
-myInput.onblur = function() {
-  document.getElementById('validator').style.display = "none";
-}
-
+myInput.onblur = function () {
+  document.getElementById("validator").style.display = "none";
+};
 
 myInput.onkeyup = validator;
 
-function validator(){
+function validator() {
   var lowerCaseLetters = /[a-z]/g;
 
-  if(myInput.value.match(lowerCaseLetters)){
-    letter.classList.remove('invalid');
-    letter.classList.add('valid');
+  if (myInput.value.match(lowerCaseLetters)) {
+    letter.classList.remove("invalid");
+    letter.classList.add("valid");
+  } else {
+    letter.classList.remove("valid");
+    letter.classList.add("invalid");
   }
-  else{
-    letter.classList.remove('valid');
-    letter.classList.add('invalid');
-  }
-
 
   var upperCaseLetters = /[A-Z]/g;
-  if(myInput.value.match(upperCaseLetters)){
-    capital.classList.remove('invalid');
-    capital.classList.add('valid');
-  }
-  else{
-    capital.classList.remove('valid');
-    capital.classList.add('invalid');
-  
+  if (myInput.value.match(upperCaseLetters)) {
+    capital.classList.remove("invalid");
+    capital.classList.add("valid");
+  } else {
+    capital.classList.remove("valid");
+    capital.classList.add("invalid");
   }
 
   var numbers = /[0-9]/g;
-  if(myInput.value.match(numbers)){
-    number.classList.remove('invalid');
-    number.classList.add('valid');
-  }
-  else{
-    number.classList.remove('valid');
-    number.classList.add('invalid');
-  
+  if (myInput.value.match(numbers)) {
+    number.classList.remove("invalid");
+    number.classList.add("valid");
+  } else {
+    number.classList.remove("valid");
+    number.classList.add("invalid");
   }
 
-  
-
-  if(myInput.value.length >= 8){
-      length.classList.remove('invalid');
-      length.classList.add('valid');
-    }
-    else{
-      length.classList.remove('valid');
-      length.classList.add('invalid');
-    
-    }
+  if (myInput.value.length >= 8) {
+    length.classList.remove("invalid");
+    length.classList.add("valid");
+  } else {
+    length.classList.remove("valid");
+    length.classList.add("invalid");
+  }
 }
 
-var confirm = document.getElementById('confirm_pwd');
+var confirm = document.getElementById("confirm_pwd");
 confirm.onkeyup = confirmPassword;
-function confirmPassword(){
-  if(myInput.value.length != 0){
-    if(confirm.value.length > myInput.value.length ||
-       !(confirm.value[confirm.value.length -1 ] == myInput.value[confirm.value.length - 1]))
-    document.getElementById('pwd_message').innerHTML = "wrong password";
-    else {
-      document.getElementById('pwd_message').innerHTML = "";
-      return true;
-    }
-  } 
+function confirmPassword() {
+  if (myInput.value.length != 0) {
+    if (confirm.value.length <= myInput.value.length) {
+      if (
+        confirm.value[confirm.value.length - 1] !=
+        myInput.value[confirm.value.length - 1]
+      )
+        document.getElementById("pwd_message").innerHTML =
+          "confirm password is wrong";
+      else {
+        document.getElementById("pwd_message").innerHTML = "";
+        return true;
+      }
+    } else
+      document.getElementById("pwd_message").innerHTML =
+        "confirm password is wrong";
+  }
   return false;
 }
 
 var email = document.getElementById("email");
 email.onblur = validateEmail;
 
-function validateEmail(){
-  if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value))){
-    document.getElementById('error').innerHTML = "email is wrong";
+function validateEmail() {
+  if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+    document.getElementById("error").innerHTML = "Enter valid Email";
     return false;
-  }
-  else document.getElementById('error').innerHTML = ""
+  } else document.getElementById("error").innerHTML = "";
   return true;
 }
 
 var marksSelected = false;
 var yearSelected = false;
-var year = document.getElementById('year');
+year = document.getElementById("year");
 year.onkeyup = yearValidate;
-function yearValidate(){
-  yearSelected = true;
-  var validYear = /[0-9]/g;
-  if(!(year.value.match(validYear))){
-    document.getElementById('message').innerHTML = "Enter valid Year";
-    return false;
-  }
-  else document.getElementById('message').innerHTML = "";
-  return true; 
+function yearValidate() {
+  if (/^[0-9]{1,4}$/.test(this.value)) {
+    document.getElementById("message").innerHTML = "";
+    return true;
+  } 
+  else document.getElementById("message").innerHTML = "Enter Valid Year";
+  return false;
 }
 
-var marks = document.getElementById('marks');
+
+marks = document.getElementById("marks");
 marks.onkeyup = marksValidate;
-function marksValidate(){
+function marksValidate() {
   marksSelected = true;
-  var vaildMarks = /[0-9\b]/g;
-  if(!(marks.value.match(vaildMarks))){
-    document.getElementById('message').innerHTML = "Enter valid marks"
-    return false;
-  }
-
-  else document.getElementById('message').innerHTML = "";
-  return true;
+  if (/^[0-9]*$/.test(this.value)) {
+    document.getElementById("message").innerHTML = "";
+    return true;
+  } else document.getElementById("message").innerHTML = "Enter Valid Marks";
+  return false;
 }
 
 
-year.onblur = validMarksandYear;
-marks.onblur = validMarksandYear;
-
-function validMarksandYear(){
-  if(marksSelected&& yearSelected&& marksValidate() && yearValidate())
-  document.getElementById('message').innerHTML = "";
-  else if(year.value.length !=4){
-    document.getElementById('message').innerHTML = "Enter valid Year";
-  }
-}
 function fileValidation() {
-  var fileInput =
-  document.getElementById('myFile');
-  var imagePara =  document.getElementById('image_error');
+  var fileInput = document.getElementById("myFile");
+  var imagePara = document.getElementById("image_error");
 
-  if(fileInput.value == ""){
+  if (fileInput.value == "") {
     imagePara.innerHTML = "upload image file";
     return false;
-   }
+  }
 
- 
-   
   var filePath = fileInput.value;
-  var allowedExtensions =
-          /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-   console.log(fileInput.files[0].size);
+  var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+  console.log(fileInput.files[0].size);
 
   if (!allowedExtensions.exec(filePath)) {
-      imagePara.innerHTML = "wrong image format";
-      return false;
-  }
-  else imagePara.innerHTML = "";
-  var filesize = fileInput.files[0].size/1024;
-  if(filesize < 50 || filesize>200){
+    imagePara.innerHTML = "wrong image format";
+    return false;
+  } else imagePara.innerHTML = "";
+  var filesize = fileInput.files[0].size / 1024;
+  if (filesize < 50 || filesize > 200) {
     alert("Incorrect file size");
     return false;
   }
   return true;
 }
 
+var date = document.getElementById('date_input');
+date.onkeyup = validDate;
+
+function validDate(){
+  if(/^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/.test(date.value)){
+    document.getElementById('date_error').innerHTML = ""
+    return true;
+  }
+  else {
+    removeBorder();
+    emptyInput=date;
+    emptyInput.classList.add('redBorder');
+    document.getElementById('date_error').innerHTML = "Enter Valid date";
+    emptyInput.select();
+    emptyInput.scrollIntoView();
+  }
+  
+}
