@@ -45,6 +45,7 @@ for (var option of document.getElementById("hobbies").options) {
 }
 
 function func() {
+  if (emptyInput != undefined) emptyInput.classList.remove("redBorder");
   // validate firstname
   var firstName = document.getElementById("fname");
   if (firstName.value == "") {
@@ -294,24 +295,18 @@ function checkEmptyCell(length, row) {
   return true;
 }
 
-document.addEventListener("click", removeBorder);
+document.addEventListener('mousedown', removeBorder);
 
 function removeBorder() {
-  if (emptyInput != undefined && emptyInput.value != "") {
+  if (emptyInput != undefined) {
     emptyInput.classList.remove("redBorder");
-    if (emptyInput.parentNode.parentNode.parentNode.id == "table_body") {
-      if (
-        (emptyInput.id == "year" && !/^[0-9]{4}$/.test(emptyInput.value)) ||
-        (emptyInput.id == marks && !/^[0-9]*$/.test(empty.value))
-      ) {
-        console.log(emptyInput);
-
-        return;
-      }
-      document.getElementById("message").innerHTML = "";
-    }
-    document.getElementById("pwd_message").innerHTML = "";
   }
+  document.getElementById("pwd_message").innerHTML = "";
+  document.getElementById("message").innerHTML = "";
+  document.getElementById("subect_error").innerHTML = "";
+  document.getElementById("hobbies_error").innerHTML = "";
+  document.getElementById("image_error").innerHTML = "";
+  document.getElementById("date_error").innerHTML = "";
 }
 
 var myInput = document.getElementById("pwd");
@@ -394,7 +389,7 @@ var email = document.getElementById("email");
 email.onblur = validateEmail;
 
 function validateEmail() {
-  if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value)) {
+  if (email.value !="" && !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value)) {
     document.getElementById("error").innerHTML = "Enter valid Email";
     return false;
   } else document.getElementById("error").innerHTML = "";
