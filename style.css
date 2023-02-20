@@ -255,7 +255,7 @@ td input {
   background-color: red;
 }
 
-p[id=message], p[id=error],p[id=pwd_message],p[id=subect_error],p[id=hobbies_error]{
+p[id=message],p[id=validityMessage], p[id=error],p[id=pwd_message],p[id=subect_error],p[id=hobbies_error]{
   display: flex;
   justify-content: center;
   font-weight: 600;

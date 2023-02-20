@@ -12,7 +12,7 @@ var btn = document.getElementById("submit");
 btn.addEventListener("click", func);
 
 var maths = document.getElementById("maths");
-maths.addEventListener('change',checkSubject(this));
+maths.addEventListener("change", checkSubject(this));
 subjectList.push(maths);
 var biology = document.getElementById("biology");
 subjectList.push(biology);
@@ -24,35 +24,31 @@ subjectList.push(physics);
 var english = document.getElementById("english");
 subjectList.push(english);
 
-
 for (var subject of subjectList) {
-  subject.addEventListener('change' , checkSubject);
+  subject.addEventListener("change", checkSubject);
 }
 
-function checkSubject(){
-  if(this.checked == true){
-    document.getElementById('subect_error').innerHTML = "";
+function checkSubject() {
+  if (this.checked == true) {
+    document.getElementById("subect_error").innerHTML = "";
     selectedSbject.push(this.value);
-  }
-  else selectedSbject.pop(this.value);
+  } else selectedSbject.pop(this.value);
 }
 
-for (var option of document.getElementById("hobbies").options){
-  option.addEventListener('click',function(){
-    if (this.selected){
+for (var option of document.getElementById("hobbies").options) {
+  option.addEventListener("click", function () {
+    if (this.selected) {
       selectedHobbies.push(this.value);
-      document.getElementById('hobbies_error').innerHTML = "";
-    } 
-  })
+      document.getElementById("hobbies_error").innerHTML = "";
+    }
+  });
 }
-
 
 function func() {
-
   // validate firstname
   var firstName = document.getElementById("fname");
   if (firstName.value == "") {
-    removeBorder();
+    if (emptyInput != undefined) emptyInput.classList.remove("redBorder");
     emptyInput = firstName;
     emptyInput.classList.add("redBorder");
     emptyInput.select();
@@ -100,36 +96,25 @@ function func() {
     emptyInput.classList.add("redBorder");
     emptyInput.scrollIntoView();
 
-    document.getElementById('hobbies_error').innerHTML = "Select Hobbies";
+    document.getElementById("hobbies_error").innerHTML = "Select Hobbies";
     return;
-  }
-  else document.getElementById('hobbies_error').innerHTML = "";
+  } else document.getElementById("hobbies_error").innerHTML = "";
 
   // check if subject field is empty
 
   if (selectedSbject.length == 0) {
-    if(!alreadyClick)
-    addClass();
+    if (!alreadyClick) addClass();
     document.getElementById("option_container").scrollIntoView();
-    document.getElementById('subect_error').innerHTML = "Select Subject";
+    document.getElementById("subect_error").innerHTML = "Select Subject";
     return;
-  }
-  else document.getElementById('subect_error').innerHTML = "";
+  } else document.getElementById("subect_error").innerHTML = "";
 
-  // validate table
-  for(var i=0;i<= tableCount;i++){
-    if(!checkEmptyCell(5, document.getElementById("table_body").rows[i]))
-    return;
-  }
   
-  // year validate
-  if (!yearValidate()) {
-    document.getElementById("year").scrollIntoView();
-    return;
-  }
-  if (!marksValidate()) {
-    document.getElementById("marks").scrollIntoView();
-    return;
+  // validate table
+  for (var i = 0; i <= tableCount; i++) {
+    if(document.getElementById("table_body").rows[i] != undefined)
+    if (!checkEmptyCell(4, document.getElementById("table_body").rows[i]))
+      return;
   }
 
   // image validation
@@ -173,36 +158,31 @@ function func() {
   } else passwordError.innerHTML = "";
 
   // date validation
-  if(!validDate()){
+  if (!validDate()) {
     return;
   }
-  
+
   // print output
-  var printContainer = document.getElementById('print');
+  var printContainer = document.getElementById("print");
   printContainer.innerHTML = "";
-  var form = document.getElementById('information');
+  var form = document.getElementById("information");
   var formData = new FormData(form);
 
-  for(item of formData){
-    if(item[0] == "filename"){
-
+  for (item of formData) {
+    if (item[0] == "filename") {
       var fileInput = document.getElementById("myFile");
       if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           printContainer.innerHTML +=
-                '<img style = "width : 10rem" src="' + e.target.result
-                + '"/>';
+            '<img style = "width : 10rem" src="' + e.target.result + '"/>';
         };
-         
+
         reader.readAsDataURL(fileInput.files[0]);
-    }
-
+      }
+    } else
+      printContainer.innerHTML += item[0] + ": " + item[1] + "<br>" + "<br>";
   }
-  else
-  printContainer.innerHTML += item[0] + ": " + item[1] + "<br>"+"<br>";
-}
-
 }
 
 var male = document.getElementById("male");
@@ -247,8 +227,10 @@ function addFunc() {
   var x = document.getElementById("table_body").rows[tableCount - 1];
 
   if (!checkEmptyCell(cellLength - 1, x)) {
+    console.log("failed");
     return;
   }
+  document.getElementById("message").innerHTML = "";
 
   var row = table.insertRow(tableCount);
   var cell1 = row.insertCell(0);
@@ -261,9 +243,9 @@ function addFunc() {
   cell2.innerHTML =
     '<input class="field" type="text" id="field" name="field" value="" placeholder="Field">';
   cell3.innerHTML =
-    '<input class="year" type="text" id="year" name="year" value="" placeholder="Year">';
+    '<input class="year" type="number" min="1990" id="year" name="year" value="" placeholder="Year">';
   cell4.innerHTML =
-    '<input class="marks" type="text" name="marks" id="marks" value="" placeholder="Marks Obtained">';
+    '<input class="marks" type="number" name="marks" id="marks" value="" placeholder="Marks Obtained">';
   cell5.innerHTML =
     '<div id="add_and_delete" class="add_and_delete"> <button onclick="addFunc()" type="button" class="add" id="add" name="add" value="+"> + </button> <button onclick="myDeleteFunction()" type="button" class="minus" id="minus" name="minus" value="-"> - </button> </div>';
 }
@@ -274,14 +256,15 @@ function myDeleteFunction() {
 }
 
 function checkEmptyCell(length, row) {
+  document.getElementById("validityMessage").innerHTML = "";
+
   for (var i = 0; i < length; i++) {
     var childList = row.cells[i].childNodes;
     var index = 0;
-    if (childList.length > 1) {
-      index = 1;
-    }
+    if (childList.length > 1) index = 1;
+
     if (childList[index].value == "") {
-      removeBorder();
+      if (emptyInput != undefined) emptyInput.classList.remove("redBorder");
       emptyInput = childList[index];
       childList[index].classList.add("redBorder");
       emptyInput.select();
@@ -290,49 +273,44 @@ function checkEmptyCell(length, row) {
         childList[index].placeholder + " is Incomplete";
       return false;
     }
-    else{
-      if(childList[index].className == 'year'){
-         var keyup = childList[index].onkeyup = newYearValidate(childList[index]);
-         var blur = childList[index].onblur = newYearValidate(childList[index]);
-         var submit = newYearValidate(childList[index]);
-          if(!(keyup && blur && submit))
+    {
+      if (childList[index].id == "year") {
+        if (!/^[0-9]{4}$/.test(childList[index].value)) {
+          emptyInput = childList[index];
+          document.getElementById("message").innerHTML = "Enter Valid Year";
           return false;
         }
-  
-         else if(childList[index].className == 'marks'){
-          var keyup = childList[index].onkeyup = newMarksValidate(childList[index]);
-          var blur = childList[index].onblur = newMarksValidate(childList[index]);
-          var submit = newMarksValidate(childList[index]);
-          if(!(keyup && blur && submit))
+      }
+      if (childList[index].id == "marks") {
+        if (!/^[0-9]*$/.test(childList[index].value)) {
+          emptyInput = childList[index];
+          document.getElementById("message").innerHTML = "Enter Valid marks";
           return false;
         }
-    } 
-
+      }
     }
+  }
+  document.getElementById("message").innerHTML = "";
   return true;
 }
-function newYearValidate(new_year){
-  if(/^[0-9]{1,4}$/.test(new_year.value)){
-    // document.getElementById("message").innerHTML = "";
-    return true;
-  }
-  else document.getElementById("message").innerHTML = "Enter Valid Year";
-  return false;
-}
 
-function newMarksValidate(new_marks){
-  if(/^[0-9]*$/.test(new_marks.value)){
-    // document.getElementById("message").innerHTML = "";
-    return true;
-  }
-  else document.getElementById("message").innerHTML = "Enter Valid Marks";
-}
 document.addEventListener("click", removeBorder);
 
 function removeBorder() {
   if (emptyInput != undefined && emptyInput.value != "") {
     emptyInput.classList.remove("redBorder");
-    document.getElementById("message").innerHTML = "";
+    if (emptyInput.parentNode.parentNode.parentNode.id == "table_body") {
+      if (
+        (emptyInput.id == "year" && !/^[0-9]{4}$/.test(emptyInput.value)) ||
+        (emptyInput.id == marks && !/^[0-9]*$/.test(empty.value))
+      ) {
+        console.log(emptyInput);
+
+        return;
+      }
+      document.getElementById("message").innerHTML = "";
+    }
+    document.getElementById("pwd_message").innerHTML = "";
   }
 }
 
@@ -416,38 +394,12 @@ var email = document.getElementById("email");
 email.onblur = validateEmail;
 
 function validateEmail() {
-  if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+  if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value)) {
     document.getElementById("error").innerHTML = "Enter valid Email";
     return false;
   } else document.getElementById("error").innerHTML = "";
   return true;
 }
-
-var marksSelected = false;
-var yearSelected = false;
-year = document.getElementById("year");
-year.onkeyup = yearValidate;
-function yearValidate() {
-  if (/^[0-9]{1,4}$/.test(this.value)) {
-    document.getElementById("message").innerHTML = "";
-    return true;
-  } 
-  else document.getElementById("message").innerHTML = "Enter Valid Year";
-  return false;
-}
-
-
-marks = document.getElementById("marks");
-marks.onkeyup = marksValidate;
-function marksValidate() {
-  marksSelected = true;
-  if (/^[0-9]*$/.test(this.value)) {
-    document.getElementById("message").innerHTML = "";
-    return true;
-  } else document.getElementById("message").innerHTML = "Enter Valid Marks";
-  return false;
-}
-
 
 function fileValidation() {
   var fileInput = document.getElementById("myFile");
@@ -474,21 +426,19 @@ function fileValidation() {
   return true;
 }
 
-var date = document.getElementById('date_input');
-date.onkeyup = validDate;
+var date = document.getElementById("date_input");
 
-function validDate(){
-  if(/^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/.test(date.value)){
-    document.getElementById('date_error').innerHTML = ""
+function validDate() {
+  if (/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/.test(date.value)) {
+    document.getElementById("date_error").innerHTML = "";
     return true;
-  }
-  else {
+  } else {
     removeBorder();
-    emptyInput=date;
-    emptyInput.classList.add('redBorder');
-    document.getElementById('date_error').innerHTML = "Enter Valid date";
+    emptyInput = date;
+    emptyInput.classList.add("redBorder");
+    document.getElementById("date_error").innerHTML = "Enter Valid date";
     emptyInput.select();
     emptyInput.scrollIntoView();
   }
-  
+  return false;
 }

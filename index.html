@@ -126,11 +126,11 @@
                                             placeholder="Field">
                                     </td>
                                     <td>
-                                        <input class="year" type="text" id="year" name="year" value=""
+                                        <input class="year" type="number" min="1990" id="year" name="year" value=""
                                             placeholder="Year">
                                     </td>
                                     <td>
-                                        <input class="marks" type="text" name="marks" id="marks" value=""
+                                        <input class="marks" type="number" name="marks" id="marks" value=""
                                             placeholder="Marks Obtained">
                                     </td>
                                     <td class="button_column">
@@ -140,20 +140,21 @@
                                                 +
                                             </button>
                                             <!-- <button onclick="myDeleteFunction()" type="button" class="minus" id="minus"
-                        name="minus" value="-">
-                        -
-                    </button> -->
+                          name="minus" value="-">
+                          -
+                      </button> -->
                                         </div>
                                     </td>
 
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="message">
-                            <p id="message"></p>
-                        </div>
-                    </div>
 
+                    </div>
+                </div>
+                <div class="message">
+                    <p id="message"></p>
+                    <p id="validityMessage"></p>
                 </div>
                 <div class="about">
                     <label for="about_yourself"> Add About Yourself</label>
@@ -196,7 +197,7 @@
 
                 <div class="date" id="date">
                     <label for="date_input">Date:</label> <br>
-                    <input type="text" class="" id="date_input" name="date" value="" placeholder="mm/dd/yyyy">
+                    <input type="date" class="" id="date_input" name="date" value="" placeholder="mm/dd/yyyy">
                     <div>
                         <p id="date_error"></p>
                     </div>
