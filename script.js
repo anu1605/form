@@ -72,10 +72,11 @@ function func() {
   var email = document.getElementById("email");
 
   if (!validateEmail()) {
-    removeBorder();
-    emptyInput = email;
+    if(emptyInput!=undefined && emptyInput!=email){
+      removeBorder();
+      emptyInput = email;
+    }
     emptyInput.classList.add("redBorder");
-    email.scrollIntoView();
     return;
   }
 
@@ -302,6 +303,7 @@ function removeBorder() {
     emptyInput.classList.remove("redBorder");
   }
   document.getElementById("pwd_message").innerHTML = "";
+  document.getElementById('error').innerHTML = "";
   document.getElementById("message").innerHTML = "";
   document.getElementById("subect_error").innerHTML = "";
   document.getElementById("hobbies_error").innerHTML = "";
@@ -386,10 +388,12 @@ function confirmPassword() {
 }
 
 var email = document.getElementById("email");
-email.onblur = validateEmail;
+
 
 function validateEmail() {
-  if (email.value !="" && !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value)) {
+  if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value)) {
+    email.select();
+    email.scrollIntoView();
     document.getElementById("error").innerHTML = "Enter valid Email";
     return false;
   } else document.getElementById("error").innerHTML = "";
