@@ -9,7 +9,7 @@ var selectedHobbies = [];
 var year;
 var marks;
 var btn = document.getElementById("submit");
-btn.addEventListener("click", func);
+btn.onclick = func;
 
 var maths = document.getElementById("maths");
 maths.addEventListener("change", checkSubject(this));
@@ -41,6 +41,7 @@ for (var option of document.getElementById("hobbies").options) {
       selectedHobbies.push(this.value);
       document.getElementById("hobbies_error").innerHTML = "";
     }
+    else selectedSbject.splice(this.value.indexOf(),1);
   });
 }
 
@@ -54,7 +55,7 @@ function func() {
     emptyInput.classList.add("redBorder");
     emptyInput.select();
     emptyInput.scrollIntoView();
-    return;
+    return false;
   }
 
   // validate lastname
@@ -65,7 +66,7 @@ function func() {
     emptyInput.classList.add("redBorder");
     emptyInput.select();
     emptyInput.scrollIntoView();
-    return;
+    return false;
   }
 
   // validate email
@@ -74,10 +75,10 @@ function func() {
   if (!validateEmail()) {
     if(emptyInput!=undefined && emptyInput!=email){
       removeBorder();
-      emptyInput = email;
     }
+    emptyInput = email;
     emptyInput.classList.add("redBorder");
-    return;
+    return false;
   }
 
   // check if gender is selected
@@ -88,7 +89,7 @@ function func() {
     emptyInput = document.getElementById("male");
     emptyInput.classList.add("redBorder");
     emptyInput.scrollIntoView();
-    return;
+    return false;
   }
   // check if hobbies field is empty
 
@@ -99,7 +100,7 @@ function func() {
     emptyInput.scrollIntoView();
 
     document.getElementById("hobbies_error").innerHTML = "Select Hobbies";
-    return;
+    return false;
   } else document.getElementById("hobbies_error").innerHTML = "";
 
   // check if subject field is empty
@@ -108,7 +109,7 @@ function func() {
     if (!alreadyClick) addClass();
     document.getElementById("option_container").scrollIntoView();
     document.getElementById("subect_error").innerHTML = "Select Subject";
-    return;
+    return false;
   } else document.getElementById("subect_error").innerHTML = "";
 
   
@@ -116,15 +117,17 @@ function func() {
   for (var i = 0; i <= tableCount; i++) {
     if(document.getElementById("table_body").rows[i] != undefined)
     if (!checkEmptyCell(4, document.getElementById("table_body").rows[i]))
-      return;
+      return false;
   }
 
   // image validation
   if (!fileValidation()) {
-    return;
+    return false;
   } else document.getElementById("image_error").innerHTML = "";
+  
   var passwordError = document.getElementById("pwd_message");
   var password = document.getElementById("pwd");
+  debugger;
   if (password.value == "") {
     removeBorder();
     emptyInput = password;
@@ -132,10 +135,10 @@ function func() {
     emptyInput.scrollIntoView();
     emptyInput.classList.add("redBorder");
     passwordError.innerHTML = "enter password";
-    return;
+    return false;
   } else if (document.getElementsByClassName("invalid").length != 0) {
     passwordError.innerHTML = "enter valid password";
-    return;
+    return false;
   }
   var confirm_password = document.getElementById("confirm_pwd");
   if (confirm_password.value == "") {
@@ -145,10 +148,10 @@ function func() {
     emptyInput.scrollIntoView();
     emptyInput.classList.add("redBorder");
     passwordError.innerHTML = "confirm password";
-    return;
+    return false;
   } else if (!confirmPassword()) {
     passwordError.innerHTML = "confirm password is wrong";
-    return;
+    return false;
   } else if (confirm_password.value.length != password.value.length) {
     removeBorder();
     emptyInput = confirm_password;
@@ -156,12 +159,12 @@ function func() {
     emptyInput.scrollIntoView();
     emptyInput.classList.add("redBorder");
     passwordError.innerHTML = "confirm password is wrong";
-    return;
+    return false;
   } else passwordError.innerHTML = "";
 
   // date validation
   if (!validDate()) {
-    return;
+    return false;
   }
 
   // print output
@@ -185,6 +188,7 @@ function func() {
     } else
       printContainer.innerHTML += item[0] + ": " + item[1] + "<br>" + "<br>";
   }
+  
 }
 
 var male = document.getElementById("male");
@@ -366,7 +370,7 @@ function validator() {
 }
 
 var confirm = document.getElementById("confirm_pwd");
-confirm.onkeyup = confirmPassword;
+confirm.oninput = confirmPassword;
 function confirmPassword() {
   if (myInput.value.length != 0) {
     if (confirm.value.length <= myInput.value.length) {
