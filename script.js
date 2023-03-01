@@ -8,8 +8,8 @@ var selectedSbject = [];
 var selectedHobbies = [];
 var year;
 var marks;
-var btn = document.getElementById("submit");
-btn.onclick = func;
+// var btn = document.getElementById("submit");
+// btn.onclick = func;
 
 var maths = document.getElementById("maths");
 maths.addEventListener("change", checkSubject(this));
@@ -127,7 +127,6 @@ function func() {
   
   var passwordError = document.getElementById("pwd_message");
   var password = document.getElementById("pwd");
-  debugger;
   if (password.value == "") {
     removeBorder();
     emptyInput = password;
@@ -245,13 +244,13 @@ function addFunc() {
   var cell4 = row.insertCell(3);
   var cell5 = row.insertCell(4);
   cell1.innerHTML =
-    '<input class="education_level" type="text" id="education_level" name="education" value = "" placeholder="Education qualification">';
+    '<input class="education_level" type="text" id="education_level" name="education[]" value = "" placeholder="Education qualification">';
   cell2.innerHTML =
-    '<input class="field" type="text" id="field" name="field" value="" placeholder="Field">';
+    '<input class="field" type="text" id="field" name="field[]" value="" placeholder="Field">';
   cell3.innerHTML =
-    '<input class="year" type="number" min="1990" id="year" name="year" value="" placeholder="Year">';
+    '<input class="year" type="number" min="1990" id="year" name="year[]" value="" placeholder="Year">';
   cell4.innerHTML =
-    '<input class="marks" type="number" name="marks" id="marks" value="" placeholder="Marks Obtained">';
+    '<input class="marks" type="number" name="marks[]" id="marks" value="" placeholder="Marks Obtained">';
   cell5.innerHTML =
     '<div id="add_and_delete" class="add_and_delete"> <button onclick="addFunc()" type="button" class="add" id="add" name="add" value="+"> + </button> <button onclick="myDeleteFunction()" type="button" class="minus" id="minus" name="minus" value="-"> - </button> </div>';
 }
