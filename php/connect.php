@@ -1,11 +1,11 @@
-<!-- datetime
-blob to image comma seperated
-timestamp
+<!-- 
+null date();
 qualification 
 password encryption 
 textarea not more tha 150
 preview in table form
 enum -->
+
 
 
 <!DOCTYPE html>
@@ -21,10 +21,7 @@ enum -->
 <body>
   <?php
 
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "form";
+  include dirname(__FILE__, 2) . "/" . "php/" . "connectConfig.php";
 
   // firstname
   $array = [];
@@ -101,6 +98,25 @@ enum -->
 
   $date = $_POST['date'];
 
+  $imagePathString = "";
+  for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
+
+    $file_name = $_FILES["filename"]["name"][$i];
+    $file_tmp = $_FILES["filename"]["tmp_name"][$i];
+    $file_path = "upload-images/" . $file_name;
+    $imagePathString .= $file_name . ",";
+  }
+  array_push($array, $imagePathString);
+
+  $date = $_POST['date'];
+  if (empty($date) == 'true') {
+    $date = date('Y:m:d');
+  }
+
+  array_push($array, $date);
+
+
+
 
 
 
@@ -116,55 +132,48 @@ enum -->
 
 
 
-  // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname);
 
 
 
 
-  // Check connection
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  } else {
-    echo "Connected successfully<br>";
-  }
+  // $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,education,field,year,marks,image_files ,password, date ) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$education' , '$field', '$year' , '$marks', '$imagePathString'  ,'$pwd',  '$date')";
+
+
+  // if ($conn->query($sql)) {
+  //   echo "New record created successfully";
+  // } else {
+  //   echo "Error: " . $sql . "<br>" . $conn->error;
+  // }
 
 
 
 
-  $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,education,field,year,marks ,password ,edited_at) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$education' , '$field', '$year' , '$marks'  ,'$pwd', '$time')";
-
-
-  if ($conn->query($sql)) {
-    echo "New record created successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-  }
-
-  $id = $conn->insert_id;
   // image
+  // $id = $conn->insert_id;
+  // for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
+
+  //   $file_name = $_FILES["filename"]["name"][$i];
+  //   $file_size = $_FILES["filename"]["size"][$i];
+  //   $file_tmp = $_FILES["filename"]["tmp_name"][$i];
+  //   $file_type = $_FILES["filename"]["type"][$i];
+  //   $file_path = dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name;
 
 
-  for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
+  //   if (move_uploaded_file($file_tmp, dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name)) {
+  //     $imagedata = file_get_contents($file_path);
 
-    $file_name = $_FILES["filename"]["name"][$i];
-    $file_size = $_FILES["filename"]["size"][$i];
-    $file_tmp = $_FILES["filename"]["tmp_name"][$i];
-    $file_type = $_FILES["filename"]["type"][$i];
-    $file_path = dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name;
-
-
-    if (move_uploaded_file($file_tmp, dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name)) {
-
-      $imgSQL = "INSERT INTO post_images_table (image_ID,blob_images) VALUES ('$id','$file_path')";
-      if ($conn->query($imgSQL)) {
-        echo "<br> images added succesfully in images_table";
-      } else "Error: " . $sql . "<br>" . $conn->error;
-    }
-  }
+  //     $imgSQL = "INSERT INTO post_images_table (image_id	,blob_images) VALUES (?,?)";
+  //     $statement = $conn->prepare($imgSQL);
+  //     $statement->bind_param('ss', $id, $imagedata);
+  //     $current_id = $statement->execute() or die("<b>Error:</b> Problem on Image Insert <br/>" . mysqli_connect_error());
+  //   }
+  // }
 
 
-  include dirname(__FILE__, 2) . "/" . "php/" . "blob_to_image.php";
+  // include dirname(__FILE__, 2) . "/" . "php/" . "blob_to_image.php";
+
+
+  // include dirname(__FILE__, 2) . "/" . "php/" . "qualification_table.php";
 
 
   $conn->close();

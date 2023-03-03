@@ -1,5 +1,8 @@
 
     <?php
+    include dirname(__FILE__, 2) . "/" . "php/" . "connectConfig.php";
+
+
     if (isset($_POST['submit'])) {
         foreach ($_POST as $key => $val) {
             if ($key === 'Hobbies') {
