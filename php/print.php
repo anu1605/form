@@ -29,7 +29,7 @@
         $file_path = "upload-images/" . $file_name;
 
         if (move_uploaded_file($file_tmp, "upload-images/" . $file_name)) {
-            echo '<img style = "width : 20rem" src="' . $file_path . '"/><br>';
+            echo '<img style = "width : 5rem" src="' . $file_path . '"/><br>';
         } else echo "not succesful";
     }
 

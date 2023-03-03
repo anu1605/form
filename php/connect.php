@@ -1,8 +1,6 @@
 <!-- 
 null date();
-password encryption 
 textarea not more tha 150
-preview in table form
 enum -->
 
 
@@ -109,7 +107,7 @@ enum -->
 
 
 
-  $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,about_yourself	, image_files ,password, date ) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$about', '$imagePathString'  ,'$pwd',  '$date')";
+  $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,about_yourself	, image_files ,password, date ) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$about', '$imagePathString'  ,MD5('" . $pwd . "'),  '$date')";
 
   if ($conn->query($sql)) {
     echo "New record created successfully";

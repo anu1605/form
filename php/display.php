@@ -1,3 +1,8 @@
+<!-- 
+    action button
+    
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
         table,
         td,
         th {
@@ -16,7 +25,7 @@
 
         td,
         th {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.5rem;
         }
 
         h1 {
@@ -30,6 +39,36 @@
         .qualification_column {
             padding: 0;
 
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        .image_column {
+            display: flex;
+        }
+
+        th {
+            background-color: rgb(227, 129, 163);
+            color: white;
+        }
+
+        .main_data {
+            background-color: rgb(219, 81, 129);
+            color: white;
+        }
+
+        td:nth-child(even) {
+            background-color: rgb(250, 235, 240);
+        }
+
+        td:nth-child(odd) {
+            background-color: rgb(250, 242, 245);
+        }
+
+        .qualification_table {
+            height: 100%;
         }
     </style>
 </head>
@@ -51,19 +90,18 @@
         <h1>Display</h1>
         <table style=" border: 1px solid rgb(169, 169, 169); border-collapse: collapse;">
             <tr>
-                <th>firstname</th>
-                <th>lastname</th>
-                <th>email</th>
-                <th>gender</th>
-                <th>hobbies</th>
-                <th>subject</th>
-                <th>about_yourself</th>
-                <th>image_files</th>
-                <th>password</th>
-                <th>date</th>
-                <th>edited_at</th>
-                <th>Qualification Table</th>
-                <th>Uploaded Images</th>
+                <th class="main_data">firstname</th>
+                <th class="main_data">lastname</th>
+                <th class="main_data">email</th>
+                <th class="main_data">gender</th>
+                <th class="main_data">hobbies</th>
+                <th class="main_data">subject</th>
+                <th class="main_data">about_yourself</th>
+                <th class="main_data">image_files</th>
+                <th class="main_data">date</th>
+                <th class="main_data">edited_at</th>
+                <th class="main_data">Qualification Table</th>
+                <th class="main_data">Uploaded Images</th>
             </tr>
             <tr>
                 <td> <?php echo $row['firstname']; ?> </td>
@@ -74,11 +112,10 @@
                 <td> <?php echo $row['subject']; ?> </td>
                 <td> <?php echo $row['about_yourself']; ?> </td>
                 <td> <?php echo $row['image_files']; ?> </td>
-                <td> <?php echo $row['password']; ?> </td>
                 <td> <?php echo $row['date']; ?> </td>
                 <td> <?php echo $row['edited_at']; ?> </td>
                 <td class="qualification_column">
-                    <table>
+                    <table class="qualification_table">
                         <tr>
                             <th>education</th>
                             <th>branch</th>
@@ -101,7 +138,7 @@
                 </td>
 
         </table>
-        <td>
+        <td class="image_column">
             <?php
             for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
                 $file_name = $_FILES["filename"]["name"][$i];
@@ -111,7 +148,7 @@
                 $file_path =  "../upload-images" . $file_name;
 
                 if (move_uploaded_file($file_tmp, "../upload-images/" . $file_name)) {
-                    echo '<img style = "width : 20rem" src="../upload-images/'  . $file_name . '"><br>';
+                    echo '<img style = "width : 10rem" src="../upload-images/'  . $file_name . '"><br>';
                 }
             }
             ?>
