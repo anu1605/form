@@ -1,6 +1,5 @@
 <!-- 
 null date();
-qualification 
 password encryption 
 textarea not more tha 150
 preview in table form
@@ -65,31 +64,7 @@ enum -->
   $array['subject'] = $subject;
 
 
-  // education
-  foreach ($_POST['education'] as $index)
-    $education .= "$index" . ",";
 
-  $array['education'] = $education;
-
-  // field
-  foreach ($_POST['field'] as $index)
-    $field .= "$index" . ",";
-
-  $array['field'] = $field;
-
-
-  // year
-  foreach ($_POST['year'] as $index)
-    $year .= "$index" . ",";
-
-  $array['year'] = $year;
-
-
-  // marks
-  foreach ($_POST['marks'] as $index)
-    $marks .= "$index" . ",";
-
-  $array['marks'] = $marks;
 
   date_default_timezone_set("Asia/Kolkata");
   $time = date('h:ia');
@@ -116,8 +91,7 @@ enum -->
   array_push($array, $date);
 
 
-
-
+  $about = $_POST['about_yourself'];
 
 
 
@@ -135,21 +109,19 @@ enum -->
 
 
 
+  $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,about_yourself	, image_files ,password, date ) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$about', '$imagePathString'  ,'$pwd',  '$date')";
 
-  // $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,education,field,year,marks,image_files ,password, date ) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$education' , '$field', '$year' , '$marks', '$imagePathString'  ,'$pwd',  '$date')";
-
-
-  // if ($conn->query($sql)) {
-  //   echo "New record created successfully";
-  // } else {
-  //   echo "Error: " . $sql . "<br>" . $conn->error;
-  // }
+  if ($conn->query($sql)) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+  }
 
 
 
+  $id = $conn->insert_id;
 
   // image
-  // $id = $conn->insert_id;
   // for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
 
   //   $file_name = $_FILES["filename"]["name"][$i];
@@ -173,8 +145,9 @@ enum -->
   // include dirname(__FILE__, 2) . "/" . "php/" . "blob_to_image.php";
 
 
-  // include dirname(__FILE__, 2) . "/" . "php/" . "qualification_table.php";
+  include dirname(__FILE__, 2) . "/" . "php/" . "qualification_table.php";
 
+  include dirname(__FILE__, 2) . "/" . "php/" . "display.php";
 
   $conn->close();
   ?>
