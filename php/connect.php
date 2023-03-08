@@ -1,5 +1,4 @@
 <!-- 
-null date();
 textarea not more tha 150
 enum -->
 
@@ -109,43 +108,43 @@ enum -->
 
   $sql = "INSERT INTO table_form (firstname, lastname,email,gender,hobbies,subject,about_yourself	, image_files ,password, date ) VALUES ('$firstname', '$lastname','$email', '$gender', '$hobbies', '$subject', '$about', '$imagePathString'  ,MD5('" . $pwd . "'),  '$date')";
 
+  $_SESSION['id'] = $conn->insert_id;
   if ($conn->query($sql)) {
-    echo "New record created successfully";
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
   }
 
 
 
-  $id = $conn->insert_id;
+
+  $id  = $conn->insert_id;
+  $GLOBALS['id'] = $conn->insert_id;
+
 
   // image
-  // for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
+  for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
 
-  //   $file_name = $_FILES["filename"]["name"][$i];
-  //   $file_size = $_FILES["filename"]["size"][$i];
-  //   $file_tmp = $_FILES["filename"]["tmp_name"][$i];
-  //   $file_type = $_FILES["filename"]["type"][$i];
-  //   $file_path = dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name;
-
-
-  //   if (move_uploaded_file($file_tmp, dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name)) {
-  //     $imagedata = file_get_contents($file_path);
-
-  //     $imgSQL = "INSERT INTO post_images_table (image_id	,blob_images) VALUES (?,?)";
-  //     $statement = $conn->prepare($imgSQL);
-  //     $statement->bind_param('ss', $id, $imagedata);
-  //     $current_id = $statement->execute() or die("<b>Error:</b> Problem on Image Insert <br/>" . mysqli_connect_error());
-  //   }
-  // }
+    $file_name = $_FILES["filename"]["name"][$i];
+    $file_size = $_FILES["filename"]["size"][$i];
+    $file_tmp = $_FILES["filename"]["tmp_name"][$i];
+    $file_type = $_FILES["filename"]["type"][$i];
+    $file_path = dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name;
 
 
-  // include dirname(__FILE__, 2) . "/" . "php/" . "blob_to_image.php";
+    if (move_uploaded_file($file_tmp, dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name)) {
+    }
+  }
+
 
 
   include dirname(__FILE__, 2) . "/" . "php/" . "qualification_table.php";
 
-  include dirname(__FILE__, 2) . "/" . "php/" . "display.php";
+  print_r($_POST);
+  echo '<br>';
+  $_SESSION['id'] = $conn->insert_id;
+  print_r($_SESSION);
+
+  header("Location: http://localhost:3000/php/display.php");
 
   $conn->close();
   ?>

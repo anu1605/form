@@ -1,8 +1,3 @@
-<!-- 
-    action button
-    
- -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,12 +11,7 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
-        table,
-        td,
-        th {
-            border: 1px solid rgb(169, 169, 169);
-            border-collapse: collapse;
-        }
+
 
         td,
         th {
@@ -70,25 +60,36 @@
         .qualification_table {
             height: 100%;
         }
+
+        .preview {
+            height: 50vh;
+            overflow-y: scroll;
+        }
+
+        .preview_table {
+            height: fit-content;
+        }
+
+        a {
+            margin: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .action_btn {
+            display: flex;
+        }
     </style>
 </head>
 
 <body>
     <br>
 
-    <?php
-    include dirname(__FILE__, 2) . "/" . "php/" . "connectConfig.php";
-    echo "display.php";
-
-    $query = $conn->query("SELECT * FROM table_form where post_id = $id");
-    if ($query->num_rows > 0) {
-        $row = $query->fetch_assoc();
-    }
-    ?>
 
     <div class="preview">
         <h1>Display</h1>
-        <table style=" border: 1px solid rgb(169, 169, 169); border-collapse: collapse;">
+        <table class="preview_table">
             <tr>
                 <th class="main_data">firstname</th>
                 <th class="main_data">lastname</th>
@@ -100,67 +101,69 @@
                 <th class="main_data">image_files</th>
                 <th class="main_data">date</th>
                 <th class="main_data">edited_at</th>
-                <th class="main_data">Qualification Table</th>
                 <th class="main_data">Uploaded Images</th>
+                <th class="main_data">Action</th>
             </tr>
+
             <tr>
-                <td> <?php echo $row['firstname']; ?> </td>
-                <td> <?php echo $row['lastname']; ?> </td>
-                <td> <?php echo $row['email']; ?> </td>
-                <td> <?php echo $row['gender']; ?> </td>
-                <td> <?php echo $row['hobbies']; ?> </td>
-                <td> <?php echo $row['subject']; ?> </td>
-                <td> <?php echo $row['about_yourself']; ?> </td>
-                <td> <?php echo $row['image_files']; ?> </td>
-                <td> <?php echo $row['date']; ?> </td>
-                <td> <?php echo $row['edited_at']; ?> </td>
-                <td class="qualification_column">
-                    <table class="qualification_table">
-                        <tr>
-                            <th>education</th>
-                            <th>branch</th>
-                            <th>year</th>
-                            <th>marks</th>
-                        </tr>
-                        <tr>
-                            <?php
-                            $quali_query = $conn->query("SELECT * FROM Qualification_table where post_request_id = $id");
-                            if ($quali_query->num_rows > 0) {
-                                while ($quali_row = $quali_query->fetch_assoc()) { ?>
-                                    <td> <?php echo $quali_row['education'] ?> </td>
-                                    <td> <?php echo $quali_row['branch'] ?> </td>
-                                    <td> <?php echo $quali_row['year'] ?> </td>
-                                    <td> <?php echo $quali_row['marks'] ?> </td>
-                        </tr>
-
-                <?php }
-                            } ?>
-                </td>
-
-        </table>
-        <td class="image_column">
-            <?php
-            for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
-                $file_name = $_FILES["filename"]["name"][$i];
-                $file_size = $_FILES["filename"]["size"][$i];
-                $file_tmp = $_FILES["filename"]["tmp_name"][$i];
-                $file_type = $_FILES["filename"]["type"][$i];
-                $file_path =  "../upload-images" . $file_name;
-
-                if (move_uploaded_file($file_tmp, "../upload-images/" . $file_name)) {
-                    echo '<img style = "width : 10rem" src="../upload-images/'  . $file_name . '"><br>';
+                <?php
+                include dirname(__FILE__, 2) . "/" . "php/" . "connectConfig.php";
+                if (isset($_GET['ID'])) {
+                    $main_id = $_GET['ID'];
+                    $delete_main = mysqli_query($conn, "DELETE FROM table_form WHERE post_id = $main_id");
+                    if ($delete_main) {
+                        header("location: /php/display.php");
+                        die();
+                    }
                 }
-            }
-            ?>
-        </td>
-        </tr>
+
+
+                $query = $conn->query("SELECT * FROM table_form");
+                if ($query->num_rows > 0) {
+                    while ($row = $query->fetch_assoc()) {
+                ?>
+                        <td> <?php echo $row['firstname']; ?> </td>
+                        <td> <?php echo $row['lastname']; ?> </td>
+                        <td> <?php echo $row['email']; ?> </td>
+                        <td> <?php echo $row['gender']; ?> </td>
+                        <td> <?php echo $row['hobbies']; ?> </td>
+                        <td> <?php echo $row['subject']; ?> </td>
+                        <td> <?php echo $row['about_yourself']; ?> </td>
+                        <td> <?php echo $row['image_files']; ?> </td>
+                        <td> <?php echo $row['date']; ?> </td>
+                        <td> <?php echo $row['edited_at']; ?> </td>
+                        <td class="image_column">
+                            <?php
+                            $array = explode(',', $row['image_files']);
+                            for ($i = 0; $i < count($array) - 1; $i++) {
+                                $filename = $array[$i];
+                                echo '<img style = "width : 10rem; padding: 0 0.5rem" src="../upload-images/'  . $filename . '"><br>';
+                            }
+                            ?>
+                        </td>
+
+                        <td>
+                            <div class="action_btn">
+                                <a href="/php/display.php?ID=<?php echo $row['post_id']; ?>">Delete</a>
+                                <a href="/index.php?ID=<?php echo $row['post_id']; ?>">Edit</a>
+                            </div>
+                        </td>
+
+            </tr>
+    <?php }
+                } ?>
+
 
         </table>
-    </div>
-    <div class="image">
+
+
 
     </div>
 
+
+    <?php
+    include dirname(__FILE__, 2) . "/" . "php/" . "display_qualification.php";
+    ?>
 </body>
 
 </html>

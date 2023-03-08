@@ -1,3 +1,23 @@
+<?php
+include  "php/" . "connectConfig.php";
+if (isset($_GET['ID'])) {
+    $id = $_GET['ID'];
+    $select = $conn->query("SELECT * FROM table_form WHERE post_id=$id");
+    $data = $select->fetch_assoc();
+    $firstname = $data['firstname'];
+    $lastname = $data['lastname'];
+    $email = $data['email'];
+    $gender = $data['gender'];
+    $hobbies = explode(',', $data['hobbies']);
+    $subject = explode(',', $data['subject']);
+    $about_yourself = $data['about_yourself'];
+    $image_files = $data['image_files'];
+    $date = $data['date'];
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +25,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <title>Document</title>
 </head>
 
@@ -20,26 +40,25 @@
         <section class="form_content">
             <form id="information" action="/php/connect.php" method="POST" enctype="multipart/form-data">
                 <label for="fname">Firstname:</label><br>
-                <input class="input_text" type="text" id="fname" value="" name="Firstname" placeholder="John"><br>
+                <input class="input_text" type="text" id="fname" value="<?php if (!empty($firstname)) echo $firstname; ?>" name="Firstname" placeholder="John"><br>
 
                 <label for="lname">Lastname:</label><br>
-                <input class="input_text" type="text" name="Lastname" value="" id="lname" placeholder="doe"> <br>
+                <input class="input_text" type="text" name="Lastname" value="<?php if (!empty($lastname)) echo $lastname; ?>" id="lname" placeholder="doe"> <br>
                 <label for="email">Email Id:</label><br>
-                <input class="input_text" type="text" value="" id="email" name="Email"
-                    placeholder="john.doeS@gmail.com"><br>
+                <input class="input_text" type="text" value="<?php if (!empty($email)) echo $email; ?>" id="email" name="Email" placeholder="john.doeS@gmail.com"><br>
                 <div class="error_message">
                     <p id="error"></p>
                 </div>
 
                 <h2 id="gender_selection" class="gender_class ">Select Gender:</h2>
-                <input class="radio_button" type="radio" id="male" value="" name="gender" multiple value="Male">
+                <input class="radio_button" type="radio" id="male" name="gender" multiple value="Male" <?php echo (($gender === "male") ?  'checked' :  ''); ?>>
                 <label for="male">Male</label><br>
-                <input class="radio_button" type="radio" id="female" value="" name="gender" value="Female">
+                <input class="radio_button" type="radio" id="female" name="gender" value="Female" <?php echo (($gender === "female") ?  'checked' :  ''); ?>>
                 <label for="female">Female</label>
 
                 <h2 id="hobbies_heading">Hobbies</h2>
                 <select class="hobbies" name="Hobbies[]" id="hobbies" multiple>
-                    <option value="Reading">Reading</option>
+                    <option <?php if ((in_array('Reading', $hobbies)) === 1) echo "selected"; ?> value="Reading">Reading</option>
                     <option value="Sketching">Sketching</option>
                     <option value="Dancing">Dancing</option>
                     <option value="Singing">Singing</option>
@@ -69,13 +88,11 @@
                             <label for="biology">Biology</label>
                         </div>
                         <div class="subject_input">
-                            <input class="subject_option" type="checkbox" name="subject[]" id="economics"
-                                value="economics">
+                            <input class="subject_option" type="checkbox" name="subject[]" id="economics" value="economics">
                             <label for="economics">Economics</label>
                         </div>
                         <div class="subject_input">
-                            <input class="subject_option" type="checkbox" name="subject[]" id="chemistry"
-                                value="chemistry">
+                            <input class="subject_option" type="checkbox" name="subject[]" id="chemistry" value="chemistry">
                             <label for="chemistry">Chemistry</label>
                         </div>
                         <div class="subject_input">
@@ -111,25 +128,20 @@
                                 <tr>
 
                                     <td id="education">
-                                        <input class="education_level" type="text" id="education_level"
-                                            name="education[]" value="" placeholder="Education qualification">
+                                        <input class="education_level" type="text" id="education_level" name="education[]" value="" placeholder="Education qualification">
                                     </td>
                                     <td>
-                                        <input class="field" type="text" id="field" name="field[]" value=""
-                                            placeholder="Field">
+                                        <input class="field" type="text" id="field" name="field[]" value="" placeholder="Field">
                                     </td>
                                     <td>
-                                        <input class="year" type="number" min="1990" id="year" name="year[]" value=""
-                                            placeholder="Year">
+                                        <input class="year" type="number" min="1990" id="year" name="year[]" value="" placeholder="Year">
                                     </td>
                                     <td>
-                                        <input class="marks" type="number" name="marks[]" id="marks" value=""
-                                            placeholder="Marks Obtained">
+                                        <input class="marks" type="number" name="marks[]" id="marks" value="" placeholder="Marks Obtained">
                                     </td>
                                     <td class="button_column">
                                         <div id="add_and_delete" class="add_and_delete">
-                                            <button onclick="addFunc()" type="button" class="add" id="add" name="add"
-                                                value="+">
+                                            <button onclick="addFunc()" type="button" class="add" id="add" name="add" value="+">
                                                 +
                                             </button>
                                             <!-- <button onclick="myDeleteFunction()" type="button" class="minus" id="minus"
@@ -158,8 +170,7 @@
                 <div class="upload_image">
                     <label for="myFile">Add Image</label>
                     <br>
-                    <input type="file" id="myFile" name="filename[]" multiple required value=""
-                        onchange="return fileValidation()">
+                    <input type="file" id="myFile" name="filename[]" multiple required value="" onchange="return fileValidation()">
                     <div class="image_message">
                         <p id="image_error"></p>
                     </div>
@@ -201,7 +212,7 @@
 
 
     </div>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
     </section>
     </div>
     <div id="print"></div>
