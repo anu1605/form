@@ -1,6 +1,9 @@
 var emptyInput;
-var tableCount = 0;
+tableCount = document.getElementById("table_body").rows.length;
+console.log(tableCount);
+
 var isSelected = false;
+var alreadySelectedHobbies = 0;
 var alreadyClick = false;
 var listLength = 0;
 var subjectList = [];
@@ -24,25 +27,58 @@ subjectList.push(physics);
 var english = document.getElementById("english");
 subjectList.push(english);
 
+checkSubject();
+checkHobbies();
 for (var subject of subjectList) {
-  subject.addEventListener("change", checkSubject);
+  subject.addEventListener("click", function(){
+    if (this.checked == true) {
+      document.getElementById("subect_error").innerHTML = "";
+      if(selectedSbject.indexOf(this.value) == -1)
+      selectedSbject.push(this.value);
+    } else selectedSbject.splice(selectedSbject.indexOf(this.value),1);
+
+  });
+  
 }
 
 function checkSubject() {
-  if (this.checked == true) {
-    document.getElementById("subect_error").innerHTML = "";
-    selectedSbject.push(this.value);
-  } else selectedSbject.pop(this.value);
+  for (var subject of subjectList) {
+    if (subject.checked == true ) {
+      document.getElementById("subect_error").innerHTML = "";
+      if(selectedSbject.indexOf(subject.value) == -1)
+      selectedSbject.push(subject.value);
+    } 
+
+  }
 }
 
 for (var option of document.getElementById("hobbies").options) {
   option.addEventListener("click", function () {
-    if (this.selected) {
-      selectedHobbies.push(this.value);
+    if(alreadySelectedHobbies !=0){
+      selectedHobbies.splice(0);
+      alreadySelectedHobbies = 0;
+    }
+
+    for (var option of document.getElementById("hobbies").options) {
+      if (option.selected) {
+        if(selectedHobbies.indexOf(option.value) == -1)
+        selectedHobbies.push(option.value);
+        document.getElementById("hobbies_error").innerHTML = "";
+      }
+      else  if(selectedHobbies.indexOf(option.value) != -1) selectedHobbies.splice(selectedHobbies.indexOf(option.value),1);
+  }
+  });
+}
+
+function checkHobbies(){
+  for (var option of document.getElementById("hobbies").options) {
+    if (option.selected) {
+      if(selectedHobbies.indexOf(option.value) == -1)
+      selectedHobbies.push(option.value);
       document.getElementById("hobbies_error").innerHTML = "";
     }
-    else selectedSbject.splice(this.value.indexOf(),1);
-  });
+}
+alreadySelectedHobbies = selectedHobbies.length;
 }
 
 function func() {
@@ -256,8 +292,11 @@ function addFunc() {
 }
 
 function myDeleteFunction() {
-  document.getElementById("table_body").deleteRow(tableCount);
-  tableCount--;
+  if(tableCount>0){
+    document.getElementById("table_body").deleteRow(tableCount-1);
+    tableCount--;
+
+  }
 }
 
 function checkEmptyCell(length, row) {
