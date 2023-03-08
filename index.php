@@ -16,6 +16,9 @@ if (isset($_GET['ID'])) {
     $about_yourself = $data['about_yourself'];
     $date = $data['date'];
 }
+if (isset($_GET['ID'])) {
+    $action_path =  '/php/connect.php?ID=' . $_GET['ID'];
+} else $action_path = '/php/connect.php';
 ?>
 
 
@@ -40,7 +43,7 @@ if (isset($_GET['ID'])) {
         </section>
 
         <section class="form_content">
-            <form id="information" action="/php/connect.php" method="POST" enctype="multipart/form-data">
+            <form id="information" action="<?php echo $action_path ?>" method="POST" enctype="multipart/form-data">
                 <label for="fname">Firstname:</label><br>
                 <input class="input_text" type="text" id="fname" value="<?php if (!empty($firstname)) echo $firstname; ?>" name="Firstname" placeholder="John"><br>
 

@@ -81,6 +81,17 @@
             display: flex;
         }
     </style>
+    <script>
+        function myEditFunc() {
+            var x;
+            var r = confirm("Press OK or Cancel button");
+            if (r == true) {
+                x = "You pressed OK!";
+            } else {
+                x = "You pressed Cancel!";
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -110,6 +121,7 @@
                 include dirname(__FILE__, 2) . "/" . "php/" . "connectConfig.php";
                 if (isset($_GET['ID'])) {
                     $main_id = $_GET['ID'];
+
                     $delete_main = mysqli_query($conn, "DELETE FROM table_form WHERE post_id = $main_id");
                     if ($delete_main) {
                         header("location: /php/display.php");
@@ -145,7 +157,7 @@
                         <td>
                             <div class="action_btn">
                                 <a href="/php/display.php?ID=<?php echo $row['post_id']; ?>">Delete</a>
-                                <a href="/index.php?ID=<?php echo $row['post_id']; ?>">Edit</a>
+                                <a onclick="myEditFunc() " href="/index.php?ID=<?php echo $row['post_id']; ?>">Edit</a>
                             </div>
                         </td>
 
