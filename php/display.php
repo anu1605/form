@@ -81,17 +81,6 @@
             display: flex;
         }
     </style>
-    <script>
-        function myEditFunc() {
-            var x;
-            var r = confirm("Press OK or Cancel button");
-            if (r == true) {
-                x = "You pressed OK!";
-            } else {
-                x = "You pressed Cancel!";
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -156,8 +145,8 @@
 
                         <td>
                             <div class="action_btn">
-                                <a href="/php/display.php?ID=<?php echo $row['post_id']; ?>">Delete</a>
-                                <a onclick="myEditFunc() " href="/index.php?ID=<?php echo $row['post_id']; ?>">Edit</a>
+                                <a onclick="return confirm('Press OK to delete or Cancel button')" href="/php/display.php?ID=<?php echo $row['post_id']; ?>">Delete</a>
+                                <a onclick="return confirm('Press OK to edit or Cancel button')" href="/index.php?ID=<?php echo $row['post_id']; ?>">Edit</a>
                             </div>
                         </td>
 
