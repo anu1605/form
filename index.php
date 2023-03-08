@@ -11,16 +11,9 @@ if (isset($_GET['ID'])) {
     $hobbies =  $data['hobbies'];
     $subject =  $data['subject'];
     $about_you = $data['about_yourself'];
-    $images = explode(',', $data['image_files']);
-    $image_path = "";
-    for ($i = 0; $i < (count($images) - 1); $i++) {
-        $image_path .= dirname(__FILE__, 2) . "/" . "upload-images/" . $images[$i];
-    }
-
     $quali_select = $conn->query("SELECT * FROM Qualification_table WHERE post_request_id=$id");
     $qualification_rows =  mysqli_num_rows($quali_select);
     $about_yourself = $data['about_yourself'];
-    $image_files = $data['image_files'];
     $date = $data['date'];
 }
 ?>
@@ -141,24 +134,24 @@ if (isset($_GET['ID'])) {
                                         $qualification_rows--;
                                 ?>
                                         <tr>
-                                            <td id="education">
-                                                <input class="education_level" type="text" id="education_level" name="education[]" value="<?php echo $table_data['education'] ?>" placeholder="Education qualification">
+                                            <td>
+                                                <input class="education_level" type="text" name="education[]" value="<?php echo $table_data['education'] ?>" placeholder="Education qualification">
                                             </td>
                                             <td>
-                                                <input class="field" type="text" id="field" name="field[]" value="<?php echo $table_data['branch'] ?>" placeholder="Field">
+                                                <input class="field" type="text" name="field[]" value="<?php echo $table_data['branch'] ?>" placeholder="Field">
                                             </td>
                                             <td>
-                                                <input class="year" type="number" min="1990" id="year" name="year[]" value="<?php echo $table_data['year'] ?>" placeholder="Year">
+                                                <input class="year" type="number" min="1990" name="year[]" value="<?php echo $table_data['year'] ?>" placeholder="Year">
                                             </td>
                                             <td>
-                                                <input class="marks" type="number" name="marks[]" id="marks" value="<?php echo $table_data['marks'] ?>" placeholder="Marks Obtained">
+                                                <input class="marks" type="number" name="marks[]" value="<?php echo $table_data['marks'] ?>" placeholder="Marks Obtained">
                                             </td>
                                             <td class="button_column">
-                                                <div id="add_and_delete" class="add_and_delete">
-                                                    <button onclick="addFunc()" type="button" class="add" id="add" name="add" value="+">
+                                                <div class="add_and_delete">
+                                                    <button onclick="addFunc()" type="button" class="add" name="add" value="+">
                                                         +
                                                     </button>
-                                                    <?php if ($current_index > 0) echo '<button onclick="myDeleteFunction()" type="button" class="minus" id="minus" name="minus" value="-">-</button>'; ?>
+                                                    <?php if ($current_index > 0) echo '<button onclick="myDeleteFunction()" type="button" class="minus" name="minus" value="-">-</button>'; ?>
                                                 </div>
                                             </td>
                                         </tr>
@@ -167,24 +160,24 @@ if (isset($_GET['ID'])) {
                                 } else { ?>
                                     <tr>
 
-                                        <td id="education">
-                                            <input class="education_level" type="text" id="education_level" name="education[]" value="" placeholder="Education qualification">
+                                        <td>
+                                            <input class="education_level" type="text" name="education[]" value="" placeholder="Education qualification">
                                         </td>
                                         <td>
-                                            <input class="field" type="text" id="field" name="field[]" value="" placeholder="Field">
+                                            <input class="field" type="text" name="field[]" value="" placeholder="Field">
                                         </td>
                                         <td>
-                                            <input class="year" type="number" min="1990" id="year" name="year[]" value="" placeholder="Year">
+                                            <input class="year" type="number" min="1990" name="year[]" value="" placeholder="Year">
                                         </td>
                                         <td>
-                                            <input class="marks" type="number" name="marks[]" id="marks" value="" placeholder="Marks Obtained">
+                                            <input class="marks" type="number" name="marks[]" value="" placeholder="Marks Obtained">
                                         </td>
                                         <td class="button_column">
-                                            <div id="add_and_delete" class="add_and_delete">
-                                                <button onclick="addFunc()" type="button" class="add" id="add" name="add" value="+">
+                                            <div class="add_and_delete">
+                                                <button onclick="addFunc()" type="button" class="add" name="add" value="+">
                                                     +
                                                 </button>
-                                                <!-- <button onclick="myDeleteFunction()" type="button" class="minus" id="minus" name="minus" value="-">-</button> -->
+                                                <!-- <button onclick="myDeleteFunction()" type="button" class="minus"  name="minus" value="-">-</button> -->
                                     </tr>
                                 <?php }
                                 ?>
@@ -209,12 +202,13 @@ if (isset($_GET['ID'])) {
     <div class="upload_image">
         <label for="myFile">Add Image</label>
         <br>
-        <input type="file" id="myFile" name="filename[]" multiple required value="<?php echo $image_path; ?>" onchange="return fileValidation()">
+        <input type="file" id="myFile" name="filename[]" multiple required value="" onchange="return fileValidation()">
         <div class="image_message">
             <p id="image_error"></p>
         </div>
     </div>
     <br>
+
 
     <div class="password">
         <label for="pwd">Password:</label>
@@ -240,7 +234,7 @@ if (isset($_GET['ID'])) {
 
     <div class="date" id="date">
         <label for="date_input">Date:</label> <br>
-        <input type="date" class="" id="date_input" name="date" value="" placeholder="mm/dd/yyyy">
+        <input type="date" class="" id="date_input" name="date" value="<?php echo $date ?>" placeholder="mm/dd/yyyy">
         <div>
             <p id="date_error"></p>
         </div>
