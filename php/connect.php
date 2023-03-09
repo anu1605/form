@@ -30,7 +30,7 @@ enum -->
 
   // Email
   $email = $_POST['Email'];
-  $array['Email'] = $$email;
+  $array['Email'] = $email;
 
   // password
   $pwd = $_POST['pwd'];
@@ -40,13 +40,9 @@ enum -->
   $gender = $_POST['gender'];
   $array['gender'] = $gender;
 
+
   $hobbies = '';
   $subject = '';
-
-  $education = '';
-  $field = '';
-  $year = '';
-  $marks = '';
 
   // Hobbies
   foreach ($_POST['Hobbies'] as $index)
@@ -61,18 +57,19 @@ enum -->
   $array['subject'] = $subject;
 
 
-
-
+  // time
   date_default_timezone_set("Asia/Kolkata");
   $time = date('h:ia');
 
-  $array['file'] = $_POST['filename'];
+
+
+
 
   $date = $_POST['date'];
 
+  // image file names in string
   $imagePathString = "";
   for ($i = 0; $i < count($_FILES['filename']['name']); $i++) {
-
     $file_name = $_FILES["filename"]["name"][$i];
     $file_tmp = $_FILES["filename"]["tmp_name"][$i];
     $file_path = "upload-images/" . $file_name;
@@ -80,6 +77,8 @@ enum -->
   }
   array_push($array, $imagePathString);
 
+
+  // date
   $date = $_POST['date'];
   if (empty($date) == 'true') {
     $date = date('Y:m:d');
@@ -88,19 +87,18 @@ enum -->
   array_push($array, $date);
 
 
+  // about yourself
   $about = $_POST['about_yourself'];
 
 
 
 
-  // foreach ($array as $key => $val) {
-  //   if (empty($element)) {
-  //     echo $key . " is empty";
-  //     return;
-  //   }
-  // }
-
-
+  foreach ($array as $key => $val) {
+    if (empty($val)) {
+      echo $key . " is empty";
+      return;
+    }
+  }
 
 
 
@@ -131,24 +129,14 @@ enum -->
     $file_type = $_FILES["filename"]["type"][$i];
     $file_path = dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name;
 
-
     if (move_uploaded_file($file_tmp, dirname(__FILE__, 2) . "/" . "upload-images/" . $file_name)) {
-    }
+    } else "Image upload was not successful";
   }
 
 
 
   include dirname(__FILE__, 2) . "/" . "php/" . "qualification_table.php";
 
-  print_r($_POST);
-  echo '<br>';
-  $_SESSION['id'] = $conn->insert_id;
-  print_r($_SESSION);
-
-  // if (isset($_GET['ID'])) {
-  //   $get_id = $_GET['ID'];
-  //   header("Location: http://localhost:3000/php/display.php?ID=" . urlencode($_GET['ID']));
-  // } else
   header("Location: http://localhost:3000/php/display.php");
 
   $conn->close();

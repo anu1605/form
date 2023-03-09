@@ -10,15 +10,15 @@ if (isset($_GET['ID'])) {
 
 for ($i = 0; $i < count($_POST['education']); $i++) {
 
-    $qualification_table_education = $_POST['education'][$i];
-    $qualification_table_field = $_POST['field'][$i];
-    $qualification_table_year = $_POST['year'][$i];
-    $qualification_table_marks = $_POST['marks'][$i];
+    $education = $_POST['education'][$i];
+    $field = $_POST['field'][$i];
+    $year = $_POST['year'][$i];
+    $marks = $_POST['marks'][$i];
 
     if (isset($_GET['ID'])) {
-        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , education, branch , year, marks) VALUES('$get_id', '$qualification_table_education', '$qualification_table_field', '$qualification_table_year', '$qualification_table_marks')";
+        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , education, branch , year, marks) VALUES('$get_id', '$education', '$field', '$year', '$marks')";
     } else {
-        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , education, branch , year, marks) VALUES('$id', '$qualification_table_education', '$qualification_table_field', '$qualification_table_year', '$qualification_table_marks')";
+        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , education, branch , year, marks) VALUES('$id', '$education', '$field', '$year', '$marks')";
     }
 
     if ($conn->query($insert_to_qualification)) {
@@ -26,7 +26,4 @@ for ($i = 0; $i < count($_POST['education']); $i++) {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
-
-
-
 ?>

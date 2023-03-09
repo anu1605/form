@@ -109,9 +109,8 @@
                 <?php
                 include dirname(__FILE__, 2) . "/" . "php/" . "connectConfig.php";
                 if (isset($_GET['ID'])) {
-                    $main_id = $_GET['ID'];
-
-                    $delete_main = mysqli_query($conn, "DELETE FROM table_form WHERE post_id = $main_id");
+                    $main_ID = $_GET['ID'];
+                    $delete_main = mysqli_query($conn, "DELETE FROM table_form WHERE post_id = $main_ID");
                     if ($delete_main) {
                         header("location: /php/display.php");
                         die();
