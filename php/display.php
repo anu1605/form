@@ -1,3 +1,10 @@
+<!-- 
+    ascending 
+    date format readable
+    pagination
+ -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -138,6 +145,14 @@
             font-size: 1rem;
         }
 
+        .sort_anchor {
+            background-color: transparent;
+        }
+
+        .sort_anchor:hover {
+            background-color: transparent;
+        }
+
         .search-btn:hover {
             background-color: blue;
         }
@@ -156,17 +171,17 @@
         <h1>Display Form Information</h1>
         <table class="preview_table">
             <tr>
-                <th class="main_data">firstname</th>
-                <th class="main_data">lastname</th>
-                <th class="main_data">email</th>
+                <th class="main_data"> <a class="sort_anchor" href="/php/display.php?filter_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">firstname</a> </th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=lastname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">lastname</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=email&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">email</a></th>
                 <th class="main_data">gender</th>
                 <th class="main_data">hobbies</th>
                 <th class="main_data">subject</th>
                 <th class="main_data">about_yourself</th>
                 <th class="main_data">image_files</th>
-                <th class="main_data">date</th>
-                <th class="main_data">edited_at</th>
-                <th class="main_data">Uploaded Images</th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=date&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">date</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=edited_at&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">edited_at</a></th>
+                <th class="main_data">Uploaded_Images</th>
                 <th class="main_data">Action</th>
             </tr>
 
@@ -183,12 +198,26 @@
                 }
 
 
-
                 if (isset($_GET['search'])) {
                     $searched_item = $_GET['search'];
                     $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%'");
+                } else if (isset($_GET['filter_item'])) {
+                    $filter_item = $_GET['filter_item'];
+                    $switch = $_GET['switch'];
+
+                    if (isset($_GET['switch']))
+
+                        if ($switch === '1') {
+                            $query = $conn->query("SELECT * FROM table_form ORDER BY $filter_item DESC");
+                        } else if ($switch === '0') {
+                            $query = $conn->query("SELECT * FROM table_form ORDER BY $filter_item ASC");
+                        }
                 } else
                     $query = $conn->query("SELECT * FROM table_form");
+
+
+
+
                 if ($query->num_rows > 0) {
                     while ($row = $query->fetch_assoc()) {
                 ?>
@@ -232,6 +261,8 @@
 
 
     <?php
+
+
     include dirname(__FILE__, 2) . "/" . "php/" . "display_qualification.php";
     ?>
 </body>
