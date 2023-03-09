@@ -230,7 +230,7 @@
                         <td> <?php echo $row['about_yourself']; ?> </td>
                         <td> <?php echo $row['image_files']; ?> </td>
                         <td> <?php echo $row['date']; ?> </td>
-                        <td> <?php echo $row['edited_at']; ?> </td>
+                        <td> <?php echo date(date_create_from_format("Y-m-j", $row['edited_at']), "Y-M-j"); ?> </td>
                         <td class="image_column">
                             <?php
                             $array = explode(',', $row['image_files']);
