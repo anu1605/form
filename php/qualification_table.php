@@ -14,11 +14,12 @@ for ($i = 0; $i < count($_POST['education']); $i++) {
     $field = $_POST['field'][$i];
     $year = $_POST['year'][$i];
     $marks = $_POST['marks'][$i];
+    $firstname = $_POST['Firstname'];
 
     if (isset($_GET['ID'])) {
-        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , education, branch , year, marks) VALUES('$get_id', '$education', '$field', '$year', '$marks')";
+        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id ,firstname, education, branch , year, marks) VALUES('$get_id','$firstname', '$education', '$field', '$year', '$marks')";
     } else {
-        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , education, branch , year, marks) VALUES('$id', '$education', '$field', '$year', '$marks')";
+        $insert_to_qualification = "INSERT INTO Qualification_table (post_request_id , firstname ,education, branch , year, marks) VALUES('$id','$firstname' ,'$education', '$field', '$year', '$marks')";
     }
 
     if ($conn->query($insert_to_qualification)) {

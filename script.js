@@ -11,8 +11,8 @@ var selectedSbject = [];
 var selectedHobbies = [];
 var year;
 var marks;
-var btn = document.getElementById("submit");
-btn.onclick = func;
+// var btn = document.getElementById("submit");
+// btn.onclick = func;
 
 console.log(document.getElementById('myFile').value);
 var maths = document.getElementById("maths");

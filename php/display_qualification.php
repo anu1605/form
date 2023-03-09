@@ -29,6 +29,10 @@
             padding: 0.3rem 1rem;
             color: white;
         }
+
+        a:hover {
+            background-color: blue;
+        }
     </style>
 
 </head>
@@ -38,6 +42,7 @@
     <div class="qualification_container">
         <table class="qualification_table">
             <tr>
+                <th>Firstname</th>
                 <th>education</th>
                 <th>branch</th>
                 <th>year</th>
@@ -52,12 +57,17 @@
                     $delete = mysqli_query($conn, "DELETE FROM Qualification_table WHERE qualification_records_id= $id");
                 }
 
-                $quali_query = $conn->query("SELECT * FROM Qualification_table");
+                if (isset($_GET['search'])) {
+                    $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE post_request_id in (SELECT post_id FROM table_form WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%')");
+                } else
+                    $quali_query = $conn->query("SELECT * FROM Qualification_table");
                 if ($quali_query->num_rows > 0) {
                     while ($quali_row = $quali_query->fetch_assoc()) {
 
 
                 ?>
+
+                        <td> <?php echo $quali_row['firstname']; ?> </td>
                         <td> <?php echo $quali_row['education']; ?> </td>
                         <td> <?php echo $quali_row['branch']; ?> </td>
                         <td> <?php echo $quali_row['year']; ?> </td>

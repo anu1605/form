@@ -92,7 +92,7 @@ enum -->
 
 
 
-
+  // check for empty inputs
   foreach ($array as $key => $val) {
     if (empty($val)) {
       echo $key . " is empty";
@@ -102,6 +102,7 @@ enum -->
 
 
 
+  // sql query
   if (isset($_GET['ID'])) {
     $get_id = $_GET['ID'];
     $sql = "UPDATE table_form SET firstname = '$firstname', lastname= '$lastname',email='$email',gender='$gender',hobbies ='$hobbies',subject='$subject',about_yourself='$about', image_files='$imagePathString',password= MD5('" . $pwd . "'), date='$date'  WHERE post_id= $get_id";
@@ -113,10 +114,6 @@ enum -->
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
   }
-
-
-
-
   $id  = $conn->insert_id;
 
 

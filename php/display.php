@@ -8,6 +8,7 @@
     <title>Document</title>
     <style>
         body {
+            display: grid;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
@@ -33,6 +34,7 @@
 
         td {
             vertical-align: top;
+            color: darkblue;
         }
 
         .image_column {
@@ -49,12 +51,12 @@
             color: white;
         }
 
-        td:nth-child(even) {
+        tr:nth-child(even) {
             background-color: rgb(250, 235, 240);
         }
 
-        td:nth-child(odd) {
-            background-color: rgb(250, 242, 245);
+        tr:nth-child(odd) {
+            background-color: rgb(250, 222, 232);
         }
 
         .qualification_table {
@@ -77,18 +79,81 @@
             align-items: center;
         }
 
+        .clear_filter {
+            width: 10%;
+            border: 2px solid darkblue;
+            color: darkblue;
+            background-color: white;
+            justify-self: center;
+            height: 1.8rem;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            border-radius: 20px;
+        }
+
+        .clear_filter:hover {
+            background-color: darkblue;
+            color: white;
+        }
+
         .action_btn {
             display: flex;
+        }
+
+        h1 {
+            color: darkblue;
+        }
+
+        .search_container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .search {
+            width: 50%;
+            height: 3rem;
+            padding: 0.5rem;
+            border: 2px solid darkblue;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            color: darkblue;
+        }
+
+        .search::placeholder {
+            color: darkblue;
+
+        }
+
+        .search-btn {
+            border: none;
+            position: relative;
+            width: 7rem;
+            height: 3rem;
+            background-color: darkblue;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            left: -3cm;
+            top: 0cm;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-btn:hover {
+            background-color: blue;
         }
     </style>
 </head>
 
 <body>
     <br>
-
+    <form class="search_container" method="get" action="/php/display.php">
+        <input type="search" name="search" class="search" id="search" value="" placeholder="search by name">
+        <button type="submit" class="search-btn" id="search-btn" name="search-btn">Search</button>
+    </form>
+    <a class="clear_filter" href="/php/display.php">Clear Filter</a>
 
     <div class="preview">
-        <h1>Display</h1>
+        <h1>Display Form Information</h1>
         <table class="preview_table">
             <tr>
                 <th class="main_data">firstname</th>
@@ -118,7 +183,12 @@
                 }
 
 
-                $query = $conn->query("SELECT * FROM table_form");
+
+                if (isset($_GET['search'])) {
+                    $searched_item = $_GET['search'];
+                    $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%'");
+                } else
+                    $query = $conn->query("SELECT * FROM table_form");
                 if ($query->num_rows > 0) {
                     while ($row = $query->fetch_assoc()) {
                 ?>
