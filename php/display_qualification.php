@@ -47,11 +47,11 @@
                     $row_index_quali = $_GET['row_index_quali'];
                 } else $row_index_quali = 0;
                 ?>
-                <th><a class="sort_anchor" href="/php/display.php?sort_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index_quali=<?php echo $row_index_quali ?>">firstname</a> </th>
+                <th><a class="sort_anchor" href="/php/display.php?sort_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index_quali=<?php echo $row_index_quali ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">firstname</a> </th>
                 <th>education</th>
                 <th>branch</th>
-                <th><a class="sort_anchor" href="/php/display.php?sort_item=year&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index_quali=<?php echo $row_index_quali ?>">year</a> </th>
-                <th><a class="sort_anchor" href="/php/display.php?sort_item=marks&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index_quali=<?php echo $row_index_quali ?>">marks</a> </th>
+                <th><a class="sort_anchor" href="/php/display.php?sort_item=year&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index_quali=<?php echo $row_index_quali ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">year</a> </th>
+                <th><a class="sort_anchor" href="/php/display.php?sort_item=marks&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index_quali=<?php echo $row_index_quali ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">marks</a> </th>
                 <th>action</th>
             </tr>
             <tr>
@@ -60,10 +60,22 @@
 
                 if (isset($_GET['id'])) {
                     $id = $_GET['id'];
+
+
                     $delete = mysqli_query($conn, "DELETE FROM Qualification_table WHERE qualification_records_id= $id");
                 }
 
                 if (isset($_GET['search'])) {
+                    // if (isset($_GET['sort_item'])) {
+                    //     $sort_item = $_GET['sort_item'];
+                    //     $switch = $_GET['switch'];
+                    //     if (isset($_GET['switch']))
+                    //         if ($switch === '1') {
+                    //             $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  ORDER BY $sort_item DESC LIMIT $row_index_quali,2");
+                    //         } else if ($switch === '0') {
+                    //             $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  ORDER BY $sort_item ASC LIMIT $row_index_quali,2");
+                    //         }
+                    // }
                     $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  LIMIT $row_index_quali,2");
                 } else if (isset($_GET['sort_item'])) {
                     $sort_item = $_GET['sort_item'];
@@ -77,7 +89,7 @@
                 } else
                     $quali_query = $conn->query("SELECT * FROM Qualification_table LIMIT $row_index_quali,2");
 
-                if ($_GET['search'])
+                if (isset($_GET['search']))
                     $numRow = mysqli_num_rows($conn->query("SELECT * FROM Qualification_table  WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  LIMIT $row_index_quali,2"));
                 else
                     $numRow = mysqli_num_rows($conn->query("SELECT * FROM Qualification_table"));
@@ -117,9 +129,7 @@
                 $no_of_pages = intdiv($numRow, 2);
             else $no_of_pages = intdiv($numRow, 2) + 1;
             for ($i = 1; $i <= $no_of_pages; $i++) {
-                if ($i == 0)
-                    $index = 0;
-                else $index = ($i - 1) * 2;
+                $index = ($i - 1) * 2;
             ?>
                 <tr class="pagination_row">
                     <td class="pagination_cell"><a class="sort_anchor pagination_anchor" href="/php/display.php?row_index_quali=<?php echo  $index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>"><?php echo $i; ?></a></td>
