@@ -42,11 +42,11 @@
     <div class="qualification_container">
         <table class="qualification_table">
             <tr>
-                <th>Firstname</th>
+                <th><a class="sort_anchor" href="/php/display.php?sort_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">firstname</a> </th>
                 <th>education</th>
                 <th>branch</th>
-                <th>year</th>
-                <th>marks</th>
+                <th><a class="sort_anchor" href="/php/display.php?sort_item=year&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">year</a> </th>
+                <th><a class="sort_anchor" href="/php/display.php?sort_item=marks&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">marks</a> </th>
                 <th>action</th>
             </tr>
             <tr>
@@ -59,6 +59,15 @@
 
                 if (isset($_GET['search'])) {
                     $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE post_request_id in (SELECT post_id FROM table_form WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%')");
+                } else if (isset($_GET['sort_item'])) {
+                    $sort_item = $_GET['sort_item'];
+                    $switch = $_GET['switch'];
+                    if (isset($_GET['switch']))
+                        if ($switch === '1') {
+                            $quali_query = $conn->query("SELECT * FROM Qualification_table ORDER BY $sort_item DESC");
+                        } else if ($switch === '0') {
+                            $quali_query = $conn->query("SELECT * FROM Qualification_table ORDER BY $sort_item ASC");
+                        }
                 } else
                     $quali_query = $conn->query("SELECT * FROM Qualification_table");
                 if ($quali_query->num_rows > 0) {
@@ -86,7 +95,7 @@
                 } ?>
         </table>
     </div>
-    <?php  ?>
+    <?php include dirname(__FILE__, 2) . "/" . "php/" . "pagination.php"; ?>
 </body>
 
 </html>

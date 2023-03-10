@@ -1,6 +1,4 @@
 <!-- 
-    ascending 
-    date format readable
     pagination
  -->
 
@@ -156,6 +154,36 @@
         .search-btn:hover {
             background-color: blue;
         }
+
+        tr.pagination_row,
+        td.pagination_cell,
+        .pagination_body {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .pagination_anchor {
+            color: darkblue;
+            border: 2px solid darkblue;
+            border-radius: 0;
+            font-weight: 600;
+
+        }
+
+        h3 {
+            display: inline;
+            color: darkblue;
+        }
+
+        .page_no {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -167,20 +195,25 @@
     </form>
     <a class="clear_filter" href="/php/display.php">Clear Filter</a>
 
+    <h1>Display Form Information</h1>
     <div class="preview">
-        <h1>Display Form Information</h1>
+        <?php
+        if (isset($_GET['row_index'])) {
+            $row_index = $_GET['row_index'];
+        } else $row_index = 0;
+        ?>
         <table class="preview_table">
             <tr>
-                <th class="main_data"> <a class="sort_anchor" href="/php/display.php?filter_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">firstname</a> </th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=lastname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">lastname</a></th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=email&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">email</a></th>
+                <th class="main_data"> <a class="sort_anchor" href="/php/display.php?filter_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>">firstname</a> </th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=lastname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>">lastname</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=email&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>">email</a></th>
                 <th class="main_data">gender</th>
                 <th class="main_data">hobbies</th>
                 <th class="main_data">subject</th>
                 <th class="main_data">about_yourself</th>
                 <th class="main_data">image_files</th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=date&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">date</a></th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=edited_at&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>">edited_at</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=date&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>">date</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=edited_at&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>">edited_at</a></th>
                 <th class="main_data">Uploaded_Images</th>
                 <th class="main_data">Action</th>
             </tr>
@@ -198,23 +231,24 @@
                 }
 
 
+
                 if (isset($_GET['search'])) {
                     $searched_item = $_GET['search'];
-                    $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%'");
+                    $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' and post_id  BETWEEN  (SELECT MIN(post_id)+ $row_index FROM table_form) and (SELECT MIN(post_id)+ $row_index+1 ");
                 } else if (isset($_GET['filter_item'])) {
                     $filter_item = $_GET['filter_item'];
                     $switch = $_GET['switch'];
 
                     if (isset($_GET['switch']))
-
                         if ($switch === '1') {
-                            $query = $conn->query("SELECT * FROM table_form ORDER BY $filter_item DESC");
+                            $query = $conn->query("SELECT * FROM table_form WHERE post_id BETWEEN  (SELECT post_id  FROM table_form LIMIT 1)+ $row_index and (SELECT post_id FROM table_form LIMIT 1)+$row_index+1  ORDER BY $filter_item DESC ");
                         } else if ($switch === '0') {
-                            $query = $conn->query("SELECT * FROM table_form ORDER BY $filter_item ASC");
+                            $query = $conn->query("SELECT * FROM table_form WHERE post_id BETWEEN  (SELECT post_id  FROM table_form LIMIT 1)+ $row_index and (SELECT post_id FROM table_form LIMIT 1)+$row_index+1  ORDER BY $filter_item ASC");
                         }
                 } else
-                    $query = $conn->query("SELECT * FROM table_form");
+                    $query = $conn->query("SELECT * FROM table_form WHERE post_id BETWEEN  (SELECT post_id  FROM table_form LIMIT 1)+ $row_index and (SELECT post_id FROM table_form LIMIT 1)+$row_index+1 ");
 
+                $numRow = mysqli_num_rows($conn->query("SELECT * FROM table_form"));
 
 
 
@@ -230,7 +264,7 @@
                         <td> <?php echo $row['about_yourself']; ?> </td>
                         <td> <?php echo $row['image_files']; ?> </td>
                         <td> <?php echo $row['date']; ?> </td>
-                        <td> <?php echo date(date_create_from_format("Y-m-j", $row['edited_at']), "Y-M-j"); ?> </td>
+                        <td> <?php echo date("d-M-Y H:ia", strtotime($row['edited_at'])); ?> </td>
                         <td class="image_column">
                             <?php
                             $array = explode(',', $row['image_files']);
@@ -258,12 +292,29 @@
 
 
     </div>
+    <table class="pagination_container">
+        <tbody class="pagination_body">
+            <tr class="pagination_row">
+                <td class="pagination_cell page_no">Page No:</td>
+            </tr>
+            <?php
+            if ($numRow % 2 == 0)
+                $no_of_pages = intdiv($numRow, 2);
+            else $no_of_pages = intdiv($numRow, 2) + 1;
+            for ($i = 1; $i <= $no_of_pages; $i++) { ?>
+                <tr class="pagination_row">
+                    <td class="pagination_cell"><a class="sort_anchor pagination_anchor" href="/php/display.php?row_index=<?php echo isset($_GET['row_index']) ? (($i - 1) * 2) : 0 ?>"><?php echo $i; ?></a></td>
+                </tr>
+            <?php
+            }
+            ?>
+        </tbody>
+    </table>
 
 
     <?php
-
-
     include dirname(__FILE__, 2) . "/" . "php/" . "display_qualification.php";
+    include dirname(__FILE__, 2) . "/" . "php/" . "pagination.php";
     ?>
 </body>
 
