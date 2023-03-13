@@ -60,22 +60,23 @@
 
                 if (isset($_GET['id'])) {
                     $id = $_GET['id'];
-
-
                     $delete = mysqli_query($conn, "DELETE FROM Qualification_table WHERE qualification_records_id= $id");
                 }
 
                 if (isset($_GET['search'])) {
-                    // if (isset($_GET['sort_item'])) {
-                    //     $sort_item = $_GET['sort_item'];
-                    //     $switch = $_GET['switch'];
-                    //     if (isset($_GET['switch']))
-                    //         if ($switch === '1') {
-                    //             $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  ORDER BY $sort_item DESC LIMIT $row_index_quali,2");
-                    //         } else if ($switch === '0') {
-                    //             $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  ORDER BY $sort_item ASC LIMIT $row_index_quali,2");
-                    //         }
-                    // }
+                    $searched_item = $_GET['search'];
+                    if (isset($_GET['sort_item'])) {
+                        $filter_item = $_GET['sort_item'];
+                        $switch = $_GET['switch'];
+                        if (isset($_GET['switch']))
+                            if ($switch === '1') {
+                                $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item DESC LIMIT $row_index,2");
+                            } else if ($switch === '0') {
+                                $query = $conn->query("SELECT * FROM table_form WHERE  firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item ASC LIMIT $row_index,2");
+                            }
+                    }
+
+
                     $quali_query = $conn->query("SELECT * FROM Qualification_table WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  LIMIT $row_index_quali,2");
                 } else if (isset($_GET['sort_item'])) {
                     $sort_item = $_GET['sort_item'];
@@ -89,7 +90,7 @@
                 } else
                     $quali_query = $conn->query("SELECT * FROM Qualification_table LIMIT $row_index_quali,2");
 
-                if (isset($_GET['search']))
+                if ($_GET['search'])
                     $numRow = mysqli_num_rows($conn->query("SELECT * FROM Qualification_table  WHERE firstname LIKE '%$searched_item%' OR education LIKE '%$searched_item%' OR branch LIKE '%$searched_item%' OR year LIKE '%$searched_item%' OR marks LIKE '%$searched_item%'  LIMIT $row_index_quali,2"));
                 else
                     $numRow = mysqli_num_rows($conn->query("SELECT * FROM Qualification_table"));
@@ -129,7 +130,9 @@
                 $no_of_pages = intdiv($numRow, 2);
             else $no_of_pages = intdiv($numRow, 2) + 1;
             for ($i = 1; $i <= $no_of_pages; $i++) {
-                $index = ($i - 1) * 2;
+                if ($i == 0)
+                    $index = 0;
+                else $index = ($i - 1) * 2;
             ?>
                 <tr class="pagination_row">
                     <td class="pagination_cell"><a class="sort_anchor pagination_anchor" href="/php/display.php?row_index_quali=<?php echo  $index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>"><?php echo $i; ?></a></td>

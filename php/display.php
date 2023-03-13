@@ -198,21 +198,21 @@
     <h1>Display Form Information</h1>
     <div class="preview">
         <?php
-        if (isset($_GET['search'])) {
-            $searched_item = $_GET['search'];
-            if (isset($_GET['filter_item'])) {
-                $filter_item = $_GET['filter_item'];
-                $switch = $_GET['switch'];
-                if (isset($_GET['switch']))
-                    if ($switch === '1') {
-                        echo $switch . " " . $filter_item . " " . $searched_item;
-                        // $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item DESC LIMIT $row_index,2");
-                    } else if ($switch === '0') {
-                        echo $switch . " " . $filter_item . " " . $searched_item;
-                        // $query = $conn->query("SELECT * FROM table_form WHERE  firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item ASC LIMIT $row_index,2");
-                    }
-            }
-        }
+        // if (isset($_GET['search'])) {
+        //     $searched_item = $_GET['search'];
+        //     if (isset($_GET['filter_item'])) {
+        //         $filter_item = $_GET['filter_item'];
+        //         $switch = $_GET['switch'];
+        //         if (isset($_GET['switch']))
+        //             if ($switch === '1') {
+        //                 echo $switch . " " . $filter_item . " " . $searched_item;
+        //                 $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item DESC LIMIT $row_index,2");
+        //             } else if ($switch === '0') {
+        //                 echo $switch . " " . $filter_item . " " . $searched_item;
+        //                 $query = $conn->query("SELECT * FROM table_form WHERE  firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item ASC LIMIT $row_index,2");
+        //             }
+        //     }
+        // }
         if (isset($_GET['row_index'])) {
             $row_index = $_GET['row_index'];
         } else $row_index = 0;
