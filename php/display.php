@@ -184,7 +184,33 @@
             font-size: 1.2rem;
             font-weight: 600;
         }
+
+        tr.row_per_page {
+            background-color: transparent;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        #submit_rows>label {
+            color: darkblue;
+            padding: 0.3rem;
+        }
+
+        #rows {
+            border: none;
+            color: white;
+            font-weight: 600;
+            background-color: darkblue;
+            padding: 0.2rem 0;
+            padding-left: 0.2rem;
+        }
     </style>
+    <script>
+        function submitRow() {
+
+            document.getElementById('submit_rows').submit();
+        }
+    </script>
 </head>
 
 <body>
@@ -196,39 +222,43 @@
     <a class="clear_filter" href="/php/display.php">Clear Filter</a>
 
     <h1>Display Form Information</h1>
+    <form id="submit_rows" action="/php/display.php" method="get">
+        <label for="row_per_page">No. of rows:</label>
+        <select onchange="submitRow()" name="rows" id="rows">
+            <option <?php echo isset($_GET['rows']) && $_GET['rows'] == 3 ? 'selected' : ""; ?> value="3">3</option>
+            <option <?php echo isset($_GET['rows']) && $_GET['rows'] == 5 ? 'selected' : ""; ?> value="5">5</option>
+            <option <?php echo isset($_GET['rows']) && $_GET['rows'] == 8 ? 'selected' : ""; ?> value="8">8</option>
+            <option <?php echo isset($_GET['rows']) && $_GET['rows'] == 10 ? 'selected' : ""; ?> value="10">10</option>
+        </select>
+    </form>
     <div class="preview">
         <?php
-        // if (isset($_GET['search'])) {
-        //     $searched_item = $_GET['search'];
-        //     if (isset($_GET['filter_item'])) {
-        //         $filter_item = $_GET['filter_item'];
-        //         $switch = $_GET['switch'];
-        //         if (isset($_GET['switch']))
-        //             if ($switch === '1') {
-        //                 echo $switch . " " . $filter_item . " " . $searched_item;
-        //                 $query = $conn->query("SELECT * FROM table_form WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item DESC LIMIT $row_index,2");
-        //             } else if ($switch === '0') {
-        //                 echo $switch . " " . $filter_item . " " . $searched_item;
-        //                 $query = $conn->query("SELECT * FROM table_form WHERE  firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item ASC LIMIT $row_index,2");
-        //             }
-        //     }
-        // }
+        // row_index
         if (isset($_GET['row_index'])) {
             $row_index = $_GET['row_index'];
         } else $row_index = 0;
+
+
+        // rows
+        if (isset($_GET['rows'])) {
+            $row_per_page = $_GET['rows'];
+        } else $row_per_page = 3;
         ?>
+
+
+
         <table class="preview_table">
             <tr>
-                <th class="main_data"> <a class="sort_anchor" href="/php/display.php?filter_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">firstname</a> </th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=lastname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">lastname</a></th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=email&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">email</a></th>
+                <th class="main_data"> <a class="sort_anchor" href="/php/display.php?filter_item=firstname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">firstname</a> </th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=lastname&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">lastname</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=email&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">email</a></th>
                 <th class="main_data">gender</th>
                 <th class="main_data">hobbies</th>
                 <th class="main_data">subject</th>
                 <th class="main_data">about_yourself</th>
                 <th class="main_data">image_files</th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=date&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">date</a></th>
-                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=edited_at&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>">edited_at</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=date&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">date</a></th>
+                <th class="main_data"><a class="sort_anchor" href="/php/display.php?filter_item=edited_at&switch=<?php echo isset($_GET['switch']) && $_GET['switch'] == 1 ? 0 : 1 ?>&row_index=<?php echo $row_index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">edited_at</a></th>
                 <th class="main_data">Uploaded_Images</th>
                 <th class="main_data">Action</th>
             </tr>
@@ -239,10 +269,10 @@
                 if (isset($_GET['ID'])) {
                     $main_ID = $_GET['ID'];
                     $delete_main = mysqli_query($conn, "DELETE FROM table_form WHERE post_id = $main_ID");
-                    if ($delete_main) {
-                        header("location: /php/display.php");
-                        die();
-                    }
+                    // if ($delete_main) {
+                    //     header("location: /php/display.php") . $_GET['rows'];
+                    //     die();
+                    // }
                 }
 
 
@@ -255,12 +285,12 @@
                         if (isset($_GET['switch'])) {
 
                             if ($switch === '1') {
-                                $query = $conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item DESC LIMIT $row_index,2");
+                                $query = $conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item DESC LIMIT $row_index,$row_per_page");
                             } else if ($switch === '0') {
-                                $query = $conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item ASC LIMIT $row_index,2");
+                                $query = $conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' ORDER BY $filter_item ASC LIMIT $row_index,$row_per_page");
                             }
                         }
-                    } else $query = $conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' LIMIT $row_index,2");
+                    } else $query = $conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%' LIMIT $row_index,$row_per_page");
                 } else if (isset($_GET['filter_item'])) {
                     $filter_item = $_GET['filter_item'];
                     $switch = $_GET['switch'];
@@ -272,7 +302,7 @@
                             $query = $conn->query("SELECT * FROM table_form WHERE post_id BETWEEN  (SELECT post_id  FROM table_form LIMIT 1)+ $row_index and (SELECT post_id FROM table_form LIMIT 1)+$row_index+1  ORDER BY $filter_item ASC");
                         }
                 } else
-                    $query = $conn->query("SELECT * FROM table_form LIMIT $row_index,2");
+                    $query = $conn->query("SELECT * FROM table_form LIMIT $row_index,$row_per_page");
 
                 if (isset($_GET['search']))
                     $numRow = mysqli_num_rows($conn->query("SELECT * FROM table_form  WHERE firstname LIKE '%$searched_item%' OR lastname LIKE '%$searched_item%' OR email LIKE '%$searched_item%' OR hobbies LIKE '%$searched_item%' OR subject LIKE '%$searched_item%' or date LIKE '%$searched_item%'"));
@@ -306,8 +336,8 @@
 
                         <td>
                             <div class="action_btn">
-                                <a onclick="return confirm('Press OK to delete or Cancel button')" href="/php/display.php?ID=<?php echo $row['post_id']; ?>">Delete</a>
-                                <a onclick="return confirm('Press OK to edit or Cancel button')" href="/index.php?ID=<?php echo $row['post_id']; ?>">Edit</a>
+                                <a onclick="return confirm('Press OK to delete or Cancel button')" href="/php/display.php?ID=<?php echo $row['post_id']; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">Delete</a>
+                                <a onclick="return confirm('Press OK to edit or Cancel button')" href="/index.php?ID=<?php echo $row['post_id']; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>">Edit</a>
                             </div>
                         </td>
 
@@ -327,20 +357,27 @@
                 <td class="pagination_cell page_no">Page No:</td>
             </tr>
             <?php
-            if ($numRow % 2 == 0)
-                $no_of_pages = intdiv($numRow, 2);
-            else $no_of_pages = intdiv($numRow, 2) + 1;
+            if ($numRow % $row_per_page == 0) {
+                if ($numRow > $row_per_page)
+                    $no_of_pages = intdiv($numRow, $row_per_page);
+                else $no_of_pages = 1;
+            } else {
+                if ($numRow > $row_per_page)
+                    $no_of_pages = intdiv($numRow, $row_per_page) + 1;
+                else $no_of_pages = 1;
+            }
             for ($i = 1; $i <= $no_of_pages; $i++) {
                 if ($i == 0)
                     $index = 0;
-                else $index = ($i - 1) * 2;
+                else $index = ($i - 1) * $row_per_page;
             ?>
                 <tr class="pagination_row">
-                    <td class="pagination_cell"><a class="sort_anchor pagination_anchor" href="/php/display.php?row_index=<?php echo $index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>"><?php echo $i; ?></a></td>
+                    <td class="pagination_cell"><a class="sort_anchor pagination_anchor" href="/php/display.php?row_index=<?php echo $index ?>&search=<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>&rows=<?php echo isset($_GET['rows']) ? $_GET['rows'] : 3; ?>"><?php echo $i; ?></a></td>
                 </tr>
             <?php
             }
             ?>
+
         </tbody>
     </table>
 
